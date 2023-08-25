@@ -16,7 +16,7 @@ class GameController:
   pieceDict = {
     "R": Rook,
     "B": Bishop,
-    "K": Knight,
+    "N": Knight,
     "Q": Queen,
     "K": King,
     "P": Pawn,
