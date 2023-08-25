@@ -70,7 +70,6 @@ class Piece:
 
 		return output
 
-
 	# True for all pieces except pawn
 	def attacking_squares(self, board):
 		return self.get_moves(board)
