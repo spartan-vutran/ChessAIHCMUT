@@ -1,8 +1,9 @@
 import pygame
-from typing import Tuple
+from typing import Tuple, List
 from logic.attributes import Piece, GameState
 
 class Pawn(Piece):
+  notation = 'P'
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -10,14 +11,13 @@ class Pawn(Piece):
     self.img = pygame.image.load(img_path)
     self.img = pygame.transform.scale(self.img, (board.tile_width - 35, board.tile_height - 35))
 
-    self.notation = ' '
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> Tuple[int]:
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
 
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != "P":
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Pawn.notation:
       return []
 
     valid_moves = []
