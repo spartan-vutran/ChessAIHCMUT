@@ -97,16 +97,22 @@ class GameFrontEnd:
     self.setup_board()
     
     # TODO: Add options to choose which agent to run
-    self.setUpPlayer()
+    # self.setUpPlayer()
     self.initGame()
   
 
-  def setUpPlayer(self):
+  def setUpPlayer(self, mode = 'personvsagent'):
     #  TODO: Mock choosing agents
-    self.player1 = Agent()
-    self.player2 = Person()
+    if mode == 'personvspersion':
+      self.player1 = Person()
+      self.player2 = Person()
+    elif mode == 'agentvsagent':
+      self.player1 = Agent()
+      self.player2 = Agent()
+    else: 
+      self.player1 = Person()
+      self.player2 = Agent()
     self.players = [self.player1, self.player2]
-
 
   def play(self):
     """
@@ -227,19 +233,19 @@ class GameFrontEnd:
     x = mx // self.tile_width
     y = my // self.tile_height
     print(x, y)
-    # clicked_square = self.get_square_from_pos((x, y))
+    clicked_square = self.get_square_from_pos((x, y))
 
-    # if self.selected_piece is None:
-    #   if clicked_square.occupying_piece is not None:
-    #     if clicked_square.occupying_piece.side == self.gameState.turn:
-    #       self.selected_piece = clicked_square.occupying_piece
+    if self.selected_piece is None:
+      if clicked_square.occupying_piece is not None:
+        if clicked_square.occupying_piece.side == self.gameState.turn:
+          self.selected_piece = clicked_square.occupying_piece
 
-    # elif self.selected_piece.move(self, clicked_square):
-    #   self.turn = Turn.WHITE if self.turn == Turn.BLACK else Turn.BLACK
+    elif self.selected_piece.move(self, clicked_square):
+      self.turn = Turn.WHITE if self.turn == Turn.BLACK else Turn.BLACK
 
-    # elif clicked_square.occupying_piece is not None:
-    #   if clicked_square.occupying_piece.color == self.turn:
-    #     self.selected_piece = clicked_square.occupying_piece
+    elif clicked_square.occupying_piece is not None:
+      if clicked_square.occupying_piece.color == self.turn:
+        self.selected_piece = clicked_square.occupying_piece
 
 
   def is_in_check(self, color, board_change=None): # board_change = [(x1, y1), (x2, y2)]
