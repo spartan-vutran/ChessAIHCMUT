@@ -63,7 +63,7 @@ class Agent(Player):
     pass
 
   def getMove(self, gameState):
-    return Action((0,1),(0,2))
+    return Action((0,1),(2,0))
 
 class Person(Player):
   def __init__(self):
@@ -150,6 +150,9 @@ class GameFrontEnd:
 
 
   def move(self, action:Action):
+    for i in self.squares:
+      i.highlight = False
+
     pos_square =  self.get_square_from_pos(action.pos)
     tar_square = self.get_square_from_pos(action.tar)
 
@@ -236,8 +239,8 @@ class GameFrontEnd:
   def handlePerSonMove(self, x_column, y_column):
     if self.selected_piece is None:
       return False
-    action = Action((self.selected_piece.x, self.selected_piece.y),(x_column, y_column))
-    return self.move()
+    action = Action(self.selected_piece.pos,(x_column, y_column))
+    return self.move(action)
   
   def handle_click(self, mx, my):
     x = my // self.tile_width
@@ -251,7 +254,8 @@ class GameFrontEnd:
           self.selected_piece = clicked_square.occupying_piece
 
     elif self.handlePerSonMove(x, y):
-      self.gameState.turn = Turn.WHITE if self.gameState.turn == Turn.BLACK else Turn.BLACK
+      # self.gameState.turn = Turn.WHITE if self.gameState.turn == Turn.BLACK else Turn.BLACK
+      print("Person play success")
 
     elif clicked_square.occupying_piece is not None:
       if clicked_square.occupying_piece.side.value == self.gameState.turn.value:
