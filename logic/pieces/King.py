@@ -3,7 +3,8 @@ from typing import Tuple, List
 from logic.attributes import Piece, GameState, Turn
 import copy 
 class King(Piece):
-  notation = 'K'
+  NOTATION = 'K'
+  VALUE = 20000
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 

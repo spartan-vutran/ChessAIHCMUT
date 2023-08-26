@@ -12,8 +12,8 @@ class Square:
 		self.width = width
 		self.height = height
 
-		self.abs_x = x * width
-		self.abs_y = y * height
+		self.abs_x = y * width
+		self.abs_y = x * height
 		self.abs_pos = (self.abs_x, self.abs_y)
 		self.pos = (x, y)
 		self.color = 'light' if (x + y) % 2 == 0 else 'dark'
@@ -63,7 +63,7 @@ class Agent(Player):
     pass
 
   def getMove(self, gameState):
-    return Action((0,1),(0,2))
+    return Action((0,1),(2,0))
 
 class Person(Player):
   def __init__(self):
@@ -150,6 +150,9 @@ class GameFrontEnd:
 
 
   def move(self, action:Action):
+    for i in self.squares:
+      i.highlight = False
+
     pos_square =  self.get_square_from_pos(action.pos)
     tar_square = self.get_square_from_pos(action.tar)
 
@@ -170,8 +173,8 @@ class GameFrontEnd:
 
   def generate_squares(self):
     output = []
-    for y in range(8):
-      for x in range(8):
+    for x in range(8):
+      for y in range(8):
         output.append(
           Square(x,  y, self.tile_width, self.tile_height)
         )
@@ -190,8 +193,8 @@ class GameFrontEnd:
 
   def setup_board(self):
     # iterating 2d list
-    for y, row in enumerate(self.gameState.board):
-      for x, piece in enumerate(row):
+    for x, row in enumerate(self.gameState.board):
+      for y, piece in enumerate(row):
         if piece != '':
           print(x,y,piece)
           square = self.get_square_from_pos((x, y))
@@ -227,24 +230,35 @@ class GameFrontEnd:
             square.occupying_piece = Pawn(
               (x, y), Turn.WHITE if piece[0] == 'w' else Turn.BLACK, self
             )
+  def printInfoBoard(self):
+    for square in self.squares:
+      if square.occupying_piece is not None and square.occupying_piece.notation != None:
+         print(square.x, square.y)
+         print(square.occupying_piece.x, square.occupying_piece.y, square.occupying_piece.side, square.occupying_piece.notation)
 
-
+  def handlePerSonMove(self, x_column, y_column):
+    if self.selected_piece is None:
+      return False
+    action = Action(self.selected_piece.pos,(x_column, y_column))
+    return self.move(action)
+  
   def handle_click(self, mx, my):
-    x = mx // self.tile_width
-    y = my // self.tile_height
+    x = my // self.tile_width
+    y = mx // self.tile_height
     print(x, y)
     clicked_square = self.get_square_from_pos((x, y))
 
     if self.selected_piece is None:
       if clicked_square.occupying_piece is not None:
-        if clicked_square.occupying_piece.side == self.gameState.turn:
+        if clicked_square.occupying_piece.side.value == self.gameState.turn.value:
           self.selected_piece = clicked_square.occupying_piece
 
-    elif self.selected_piece.move(self, clicked_square):
-      self.turn = Turn.WHITE if self.turn == Turn.BLACK else Turn.BLACK
+    elif self.handlePerSonMove(x, y):
+      # self.gameState.turn = Turn.WHITE if self.gameState.turn == Turn.BLACK else Turn.BLACK
+      print("Person play success")
 
     elif clicked_square.occupying_piece is not None:
-      if clicked_square.occupying_piece.color == self.turn:
+      if clicked_square.occupying_piece.side.value == self.gameState.turn.value:
         self.selected_piece = clicked_square.occupying_piece
 
 
@@ -312,8 +326,8 @@ class GameFrontEnd:
     self.screen.fill('white')
     if self.selected_piece is not None:
       self.get_square_from_pos(self.selected_piece.pos).highlight = True
-      for square in self.selected_piece.get_valid_moves(self):
-        square.highlight = True
+      # for square in self.selected_piece.get_valid_moves(self):
+      #   square.highlight = True
     for square in self.squares:
       square.draw(self.screen)
     pygame.display.update()

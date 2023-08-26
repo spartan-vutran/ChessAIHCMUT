@@ -3,7 +3,8 @@ from typing import Tuple, List
 from logic.attributes import Piece, GameState
 
 class Knight(Piece):
-  notation = 'N'
+  NOTATION = 'N'
+  VALUE = 320
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -17,7 +18,7 @@ class Knight(Piece):
     player_color = "w" if gs.turn.value == 0 else "b"
 
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Knight.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Knight.NOTATION:
       return []
     
     # Get moves of Knight

@@ -3,7 +3,8 @@ from typing import Tuple, List
 from logic.attributes import Piece, GameState
 
 class Pawn(Piece):
-  notation = 'P'
+  NOTATION = 'P'
+  VALUE = 100
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -17,7 +18,7 @@ class Pawn(Piece):
     player_color = "w" if gs.turn.value == 0 else "b"
 
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Pawn.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Pawn.NOTATION:
       return []
 
     valid_moves = []

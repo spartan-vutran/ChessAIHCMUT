@@ -177,6 +177,7 @@ class GameController:
     return True
 
   def move(gs: GameState, action: Action) -> GameState:
+    turn = Turn.WHITE if gs.turn.value == Turn.BLACK.value else Turn.BLACK
     board = [
           ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
           ['', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
@@ -187,7 +188,8 @@ class GameController:
           ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
           ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR'],
         ]
-    return GameState(board, Turn.BLACK)
+    
+    return GameState(board, turn)
 
 
 
