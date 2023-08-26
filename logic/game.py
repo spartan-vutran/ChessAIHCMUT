@@ -127,7 +127,7 @@ class GameController:
   #   isEndangered = self._isEndangered(gs, pos, opponentSide)
     
   
-  def getValidMovesOfAllPiecesWith(self, gs:GameState, isEndangered: bool = False) -> List[Action]:
+  def getValidMovesOfAllPiecesWith(self, gs:GameState, isEndangered: bool = False) -> Action:
     """
     This function returns all moves of pieces, in case "kPos" is given, that means kPos is in danger, only return moves that avoid being captured
     """
@@ -148,21 +148,21 @@ class GameController:
         actions += pieceClass.getValidMoves(gs, (posRow,posCol))
 
     if not isEndangered:
-      return kActions + actions
+      allActions = kActions + actions
+      for action in allActions:
+        yield action
+    
+    
     # Keep only those actions would make the King avoid being captured
     opponentTurn = Turn.WHITE if gs.turn == Turn.BLACK else Turn.WHITE
-    eligibleActions = []
     for action in actions:
       newGs = self.move(gs, action)
       if not self._isEndangered(newGs, kingIndex, opponentTurn):
-        eligibleActions.append(action)
-
+        yield action
     for action in kActions:
       newGs = self.move(gs, action)
       if not self._isEndangered(newGs, action.tar, opponentTurn):
-        eligibleActions.append(action)
-
-    return eligibleActions
+        yield action
     # Remaining not endangered moves
     # remainningMoves = []
     # for move in possibleMoves:
@@ -198,8 +198,10 @@ class GameController:
     # TODO: Check if the king is endangered
     isEndangered = self._isEndangered(gs, kingIndex, opponentTurn)
     
-    return self.getValidMovesOfAllPiecesWith(gs, isEndangered)
-
+    actions = []
+    for action in self.getValidMovesOfAllPiecesWith(gs, isEndangered):
+      actions.append(action)
+    return actions
     # if kingIndex[0] == None: #The state does not have a King
     #   return []
     # signal, info = self._kingSignalForCheckmate(gs, kingIndex)
@@ -298,8 +300,16 @@ class GameController:
     Check if the function is terminal
     """  
     # Find the Kings and their positions
-    return not self.actions(gs)
-  
+    opponentTurn = Turn.WHITE if gs.turn == Turn.BLACK else Turn.WHITE
+    sideColor = "w" if gs.turn == Turn.WHITE else "b"
+    kingIndex = self.findPiecesById(gs, f"{sideColor}K")[0]
+    # Check if the king is endangred or checkMate
+    # TODO: Check if the king is endangered
+    isEndangered = self._isEndangered(gs, kingIndex, opponentTurn)
+    
+    for _ in self.getValidMovesOfAllPiecesWith(gs, isEndangered):
+      return False
+    return True
 
   def utility(self, gs:GameState, p:Turn) -> float:
     pass
