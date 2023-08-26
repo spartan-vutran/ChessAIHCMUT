@@ -206,7 +206,7 @@ class GameController:
 
     return GameState(board, turn)
   
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
     board = gs.board
 
