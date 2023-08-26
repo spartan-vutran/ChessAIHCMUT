@@ -37,7 +37,7 @@ class GameState:
     + board: A 2d table containing ids of pieces at each index
     + turn: 0 or 1, determining the player of the turn
     + isEnterTower: [White, Black]
-    + isKingMove: [White, Black]
+    + isKingMove: [White, Black] -> [True, False]
     + isRightRockMove: [White, Black]
     + isLeftRockMove: [White, Black]
     """
