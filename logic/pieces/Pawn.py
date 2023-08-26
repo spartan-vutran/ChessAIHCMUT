@@ -47,6 +47,8 @@ class Pawn(Piece):
     diagonal_vectors = vector_dict[player_color]
     possible_moves = ((row+diagonal_vectors[0][0], col+diagonal_vectors[0][1]), (row+diagonal_vectors[1][0], col+diagonal_vectors[1][1]))
     for tar_row, tar_col in possible_moves:
+      if tar_row > 7 or tar_row < 0 or tar_col > 7 or tar_col < 0:
+        continue
       tar_square = gs.board[tar_row][tar_col]
       if tar_square != '' and tar_square[0] != player_color:
         valid_moves.append(Move((row,col),(tar_row, tar_col)))
