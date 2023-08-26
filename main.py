@@ -15,22 +15,22 @@ def main():
   # game.play()
   board = [
     ['','','','','','','',''],
-    ['', '','','','','wK','',''],
+    ['', '','','','','','',''],
+    ['','','bB','','','','',''],
     ['','','','','','','',''],
-    ['wB','','bK','wQ','','','',''],
-    ['wB','wP','','','','','',''],
-    ['','','','wP','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
     ['', '','','','','','',''],
     ['', '','','','','','',''],
   ]
   turn = Turn.BLACK
 
   gs = GameState(board, turn)
-  eval_value = Heuristic.eval(gs)
-  print(eval_value)
-  # gc = GameController()
+  # eval_value = Heuristic.eval(gs)
+  # print(eval_value)
+  gc = GameController()
 
-  # gc.actions(gs)
+  gc.actions(gs)
 
 if __name__ == '__main__':
   main()
