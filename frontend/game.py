@@ -204,6 +204,7 @@ class GameFrontEnd:
 
     # TODO: Update gameState
     self.gameState = GameController.move(self.gameState, action)
+    print(self.board_to_string())
     return True
       
 
@@ -382,3 +383,17 @@ class GameFrontEnd:
     for square in self.squares:
       square.draw(self.screen)
     pygame.display.update()
+  
+  def board_to_string(self):
+        string =  "    A  B  C  D  E  F  G  H\n"
+        string += "    -----------------------\n"
+        for x in range(8):
+            string += str(8 - x) + " | "
+            for y in range(8):
+                piece = self.gameState.board[x][y]
+                if (piece != ''):
+                    string += piece + ' '
+                else:
+                    string += ".. "
+            string += "\n"
+        return string + "\n"
