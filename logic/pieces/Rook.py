@@ -1,6 +1,6 @@
 import pygame
 from typing import Tuple, List
-from logic.attributes import Piece, GameState
+from logic.attributes import Piece, GameState, Move, Action
 
 
 class Rook(Piece):
@@ -15,7 +15,7 @@ class Rook(Piece):
     self.notation = 'R'
 
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
@@ -28,35 +28,35 @@ class Rook(Piece):
       target_square = gs.board[uI][col]
       if target_square != '':
         if target_square[0] != player_color:
-          validMoves.append((uI,col))
+          validMoves.append(Move((row,col), (uI,col)))
         break
-      validMoves.append((uI,col))
+      validMoves.append(Move((row,col), (uI,col)))
     
     # Lower move checking
     for lI in list(reversed(range(0, row))):
       target_square = gs.board[lI][col]
       if target_square != '':
         if target_square[0] != player_color:
-          validMoves.append((lI,col))
+          validMoves.append(Move((row,col),(lI,col)))
         break
-      validMoves.append((lI,col))
+      validMoves.append(Move((row,col),(lI,col)))
     
     # Right move checking
     for rI in range(col+1, 8):
       target_square = gs.board[row][rI]
       if target_square != '':
         if target_square[0] != player_color:
-          validMoves.append((row,rI))
+          validMoves.append(Move((row,col),(row,rI)))
         break
-      validMoves.append((row,rI))
+      validMoves.append(Move((row,col),(row,rI)))
     
     # Left move checking
     for lI in list(reversed(range(0,col))):
       target_square = gs.board[row][lI]
       if target_square != '':
         if target_square[0] != player_color:
-          validMoves.append((row,lI))
+          validMoves.append(Move((row,col),(row,lI)))
         break
-      validMoves.append((row,lI))
+      validMoves.append(Move((row,col),(row,lI)))
 
     return validMoves

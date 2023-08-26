@@ -4,7 +4,7 @@ from typing import Tuple
 from logic.game import GameState, GameController, Action
 from enum import Enum
 from frontend import settings
-from logic.attributes import Action, Move, QuenPromote, EnterTower
+from logic.attributes import Action, Move, QueenPromote, EnterTower
 
 class Square:
 	def __init__(self, x, y, width, height):

@@ -1,5 +1,5 @@
 import pygame
-from logic.attributes import Piece, GameState
+from logic.attributes import Piece, GameState, Move, Action
 from typing import Tuple, List
 
 class Queen(Piece):
@@ -13,7 +13,7 @@ class Queen(Piece):
     self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
     self.notation = 'Q'
 
-  def getValidMoves(gs: GameState, pos: Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos: Tuple[int]) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
@@ -26,9 +26,9 @@ class Queen(Piece):
       square = gs.board[x][col]
       if square != "":
         if square[0] != player_color:
-          output.append((x,col))
+          output.append(Move((row,col),(x,col)))
         break
-      output.append((x,col))
+      output.append(Move((row, col),(x,col)))
 
     # Move SouthEast
     for i in range(1, 8):
@@ -38,18 +38,18 @@ class Queen(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move East
     for x in range(col + 1, 8):
       square = gs.board[row][x]
       if square != "":
         if square[0] != player_color:
-          output.append((row,x))
+          output.append(Move((row,col),(row,x)))
         break
-      output.append((row,x))
+      output.append(Move((row,col),(row,x)))
 
     # Move NorthEast
     for i in range(1, 8):
@@ -59,18 +59,18 @@ class Queen(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move South
     for x in range(row + 1, 8):
       square = gs.board[x][col]
       if square != "":
         if square[0] != player_color:
-          output.append((x,col))
+          output.append(Move((row,col),(x,col)))
         break
-      output.append((x,col))
+      output.append(Move((row,col),(x,col)))
 
     # Move NorthWest
     for i in range(1, 8):
@@ -80,18 +80,18 @@ class Queen(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move West
     for y in range(col)[::-1]:
       square = gs.board[row][y]
       if square != "":
         if square[0] != player_color:
-          output.append((row,y))
+          output.append(Move((row,col),(row,y)))
         break
-      output.append((row,y))
+      output.append(Move((row,col),(row,y)))
 
     # Move SouthWest
     for i in range(1, 8):
@@ -101,8 +101,8 @@ class Queen(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     return output

@@ -25,7 +25,6 @@ class EnterTower(Action):
     self.rPos = rPos
     self.rTar = rTar
 
-#End-region
 
 class Piece:
   def __init__(self):
@@ -37,8 +36,10 @@ class GameState:
     The state of the game, with
     + board: A 2d table containing ids of pieces at each index
     + turn: 0 or 1, determining the player of the turn
-    + white: List of white pieces
-    + black: List of black pieces
+    + isEnterTower: [White, Black]
+    + isKingMove: [White, Black]
+    + isRightRockMove: [White, Black]
+    + isLeftRockMove: [White, Black]
     """
 
     def __init__(self, board: Optional[List[List[str]]] = None, turn: Optional[Turn] = Turn.WHITE):
@@ -56,3 +57,7 @@ class GameState:
       else:
         self.board = board
       self.turn = turn
+      self.isEnterTower = [False, False]
+      self.isKingMove = [False,False]
+      self.isRightRockMove = [False, False]
+      self.isLeftRockMove = [False, False]

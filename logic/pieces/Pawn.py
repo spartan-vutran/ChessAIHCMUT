@@ -1,6 +1,6 @@
 import pygame
 from typing import Tuple, List
-from logic.attributes import Piece, GameState
+from logic.attributes import Piece, GameState, QueenPromote, Move, Action
 
 class Pawn(Piece):
   NOTATION = 'P'
@@ -14,7 +14,7 @@ class Pawn(Piece):
     self.notation = 'P'
 
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
 
@@ -23,16 +23,21 @@ class Pawn(Piece):
       return []
 
     valid_moves = []
-    diff = 1 if player_color == "b" else -1
     # Checking move forward
+    diff = 1 if player_color == "b" else -1
+    range = 1
     if (row == 1 and player_color == "b") or (row == 6 and player_color == "w"):
-      while abs(diff) <= 2:
-        tar_row = row + diff
-        tar_square = gs.board[tar_row][col]
-        if tar_square != '':
-          break
-        valid_moves.append((tar_row, col))
-        diff += diff 
+      range = 2
+    while abs(diff) <= range:
+      tar_row = row + diff
+      tar_square = gs.board[tar_row][col]
+      if tar_square != '':
+        break
+      if tar_row == 0 or tar_row == 7: #Queen Promotion here
+        valid_moves.append(QueenPromote((row,col),(tar_row, col)))
+      else:
+        valid_moves.append(Move((row,col),(tar_row, col)))
+      diff += diff 
     
     # Checking capture diagonally
     vector_dict = {
@@ -44,7 +49,7 @@ class Pawn(Piece):
     for tar_row, tar_col in possible_moves:
       tar_square = gs.board[tar_row][tar_col]
       if tar_square != '' and tar_square[0] != player_color:
-        valid_moves.append((tar_row, tar_col))
+        valid_moves.append(Move((row,col),(tar_row, tar_col)))
     
     return valid_moves
 

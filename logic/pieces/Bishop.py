@@ -1,6 +1,6 @@
 import pygame
 from typing import Tuple, List
-from logic.attributes import Piece, GameState
+from logic.attributes import Piece, GameState, Move, Action
 
 class Bishop(Piece):
   NOTATION = 'B'
@@ -14,7 +14,7 @@ class Bishop(Piece):
     self.notation = 'B'
 
 
-  def getValidMoves(gs: GameState, pos: Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos: Tuple[int]) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
@@ -30,9 +30,9 @@ class Bishop(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move NorthEast
     for i in range(1, 8):
@@ -42,9 +42,9 @@ class Bishop(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move NorthWest
     for i in range(1, 8):
@@ -54,9 +54,9 @@ class Bishop(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     # Move SouthWest
     for i in range(1, 8):
@@ -66,9 +66,9 @@ class Bishop(Piece):
       square = gs.board[tar_row][tar_col]
       if square != "":
         if square[0] != player_color:
-          output.append((tar_row, tar_col))
+          output.append(Move((row,col),(tar_row, tar_col)))
         break
-      output.append((tar_row, tar_col))
+      output.append(Move((row,col),(tar_row, tar_col)))
 
     return output
 	# def get_possible_moves(self, board):

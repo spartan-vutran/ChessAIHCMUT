@@ -1,4 +1,3 @@
-
 from typing import List, Tuple
 from logic.attributes import Turn, Action, GameState
 from logic.pieces.Rook import Rook
@@ -65,17 +64,17 @@ class GameController:
     return pieces
   
 
-  def getAllEndangeredMoves(self, gs:GameState) -> List[Tuple[int]]:
-    opponentPieces = self.getPiecesFromOpponent(gs)
-    endangredMoves = set()
-    fakeGs = copy.deepcopy(gs)  #If it is your turn, what square will be in danger ?
-    fakeGs.turn = Turn.WHITE if gs.turn.value == 1 else Turn.BLACK
-    for row, col in opponentPieces:
-      piece = gs.board[row][col]
-      pieceClass = self.pieceDict[piece[1]]
-      endangredMoves.update(pieceClass.getValidMoves(fakeGs, (row, col)))
+  # def getAllEndangeredMoves(self, gs:GameState) -> List[Tuple[int]]:
+  #   opponentPieces = self.getPiecesFromOpponent(gs)
+  #   endangredMoves = set()
+  #   fakeGs = copy.deepcopy(gs)  #If it is your turn, what square will be in danger ?
+  #   fakeGs.turn = Turn.WHITE if gs.turn.value == 1 else Turn.BLACK
+  #   for row, col in opponentPieces:
+  #     piece = gs.board[row][col]
+  #     pieceClass = self.pieceDict[piece[1]]
+  #     endangredMoves.update(pieceClass.getValidMoves(fakeGs, (row, col)))
 
-    return list(endangredMoves)
+  #   return list(endangredMoves)
 
 
   def isEndangered(self, gs:GameState, pos:int) -> bool:
@@ -154,27 +153,27 @@ class GameController:
     actions = []
     # Check if the king is endangred or checkMate
     # TODO: Check if the king is checkmated
-    if kingIndex[0] == None: #The state does not have a King
-      return []
-    signal, info = self.kingSignalForCheckmate(gs, kingIndex)
-    if signal == 1:
-      # The king is endangred but there is still a move
-      return info
-    if signal == 2:
-      # You are checkmated 
-      return []
-    actions = []
-    actions += info #Add possible moves for the Kings
+    # if kingIndex[0] == None: #The state does not have a King
+    #   return []
+    # signal, info = self.kingSignalForCheckmate(gs, kingIndex)
+    # if signal == 1:
+    #   # The king is endangred but there is still a move
+    #   return info
+    # if signal == 2:
+    #   # You are checkmated 
+    #   return []
+    # actions = []
+    # actions += info #Add possible moves for the Kings
     for posRow, posCol  in playerPieceIndexes:
       piece = gs.board[posRow][posCol]
       pieceClass = self.pieceDict[piece[1]]
-      validMoves = pieceClass.getValidMoves(gs, (posRow,posCol))
-      for tarRow, tarCol in validMoves:
-        actions.append(Action((posRow, posCol),(tarRow, tarCol)))
+      actions += pieceClass.getValidMoves(gs, (posRow,posCol))
     return actions
+
 
   def checkValidMove(gs: GameState, action: Action) -> bool:
     return True
+
 
   def move(gs: GameState, action: Action) -> GameState:
     turn = Turn.WHITE if gs.turn.value == Turn.BLACK.value else Turn.BLACK

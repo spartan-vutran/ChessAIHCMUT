@@ -1,6 +1,6 @@
 import pygame
 from typing import Tuple, List
-from logic.attributes import Piece, GameState
+from logic.attributes import Piece, GameState, Move, Action
 
 class Knight(Piece):
   NOTATION = 'N'
@@ -14,7 +14,7 @@ class Knight(Piece):
     self.notation = 'N'
 
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
 
@@ -38,7 +38,7 @@ class Knight(Piece):
           tarSquare = gs.board[tarRow][tarCol]
           if tarSquare != '' and tarSquare[0] == player_color:
             continue
-          validMoves.append((tarRow, tarCol))
+          validMoves.append(Move((row,col),(tarRow, tarCol)))
       index = index + 1
     
     return validMoves
