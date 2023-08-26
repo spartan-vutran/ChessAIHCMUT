@@ -211,6 +211,29 @@ class GameController:
     board[pos[0]][pos[1]] = ''
     board[tar[0]][tar[1]] = piece
 
+    # TODO: update value for 
+    # self.isEnterTower = [False, False]
+    # self.isKingMove = [False,False]
+    # self.isRightRockMove = [False, False]
+    # self.isLeftRockMove = [False, False]
+    if piece.endswith(Rook.NOTATION):
+      if pos[1] == 0:
+        if player_color == "w":
+          gs.isLeftRockMove[0] = True
+        else: gs.isLeftRockMove[1] = True
+      elif pos[1] == 7:
+        if player_color == "w":
+          gs.isRightRockMove[0] = True
+        else: gs.isRightRockMove[1] = True
+    elif piece.endswith(King.NOTATION):
+      if isinstance(action, EnterTower):
+        if player_color == "w":
+          gs.isEnterTower[0] = True
+        else: gs.isEnterTower[1] = True
+      if player_color == "w":
+          gs.isKingMove[0] = True
+      else: gs.isKingMove[1] = True
+
     if isinstance(action, QueenPromote):
       board[tar[0]][tar[1]] = player_color + 'Q'
     elif isinstance(action, EnterTower):
@@ -220,7 +243,13 @@ class GameController:
       board[rPos[0]][rPos[1]] = ''
       board[rTar[0]][rTar[1]] = rPiece
 
-    return GameState(board, turn)
+    gameState = GameState(board, turn)
+    gameState.isEnterTower = gs.isEnterTower
+    gameState.isKingMove = gs.isKingMove
+    gameState.isLeftRockMove = gs.isLeftRockMove
+    gameState.isRightRockMove = gs.isRightRockMove
+    
+    return gameState
   
 
   def isTerminal(self, gs:GameState) -> bool:

@@ -383,12 +383,12 @@ class GameFrontEnd:
       # for square in self.selected_piece.get_valid_moves(self):
       #   square.highlight = True
       validMoves = GameController.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
-      if validMoves:
-        string = '['
-        for move in validMoves:
-          string += '(' + str(move.tar[0]) + ', ' + str(move.tar[1]) + ')'
-        string += ']'
-        print(string)
+      # if validMoves:
+      #   string = '['
+      #   for move in validMoves:
+      #     string += '(' + str(move.tar[0]) + ', ' + str(move.tar[1]) + ')'
+      #   string += ']'
+      #   print(string)
       for action in validMoves:
         square = self.get_square_from_pos(action.tar)
         square.highlight = True
