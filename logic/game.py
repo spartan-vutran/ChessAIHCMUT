@@ -325,36 +325,18 @@ class GameController:
     piece = board[row][col]
 
     # First check if King is in endanger
-    pieceSide = Turn.WHITE if piece[0] == "w" else Turn.BLACK
+    pieceSide, opponentTurn = (Turn.WHITE, Turn.BLACK) if piece[0] == "w" else (Turn.BLACK, Turn.WHITE)
     if piece == '' or gs.turn != pieceSide:
       return []
     kPos = self.findPiecesById(gs, f"{piece[0]}K")[0]
-    signal, info = self._kingSignalForCheckmate(gs, kPos)
-    if signal == 1:
-      # The king is endangred but there is still a move
-      return info
-    if signal == 2:
-      # You are checkmated 
-      return []
+    isEndangered = self._isEndangered(gs, kPos, opponentTurn)
+    if isEndangered:
+      return self.getValidMovesOfAllPiecesWith(gs, isEndangered)
 
-    # if piece.endswith(Rook.NOTATION):
-    #   return Rook.getValidMoves(gs, pos)
-    # elif piece.endswith(Knight.NOTATION):
-    #   return Knight.getValidMoves(gs, pos)
-    # elif piece.endswith(Bishop.NOTATION):
-    #   return Bishop.getValidMoves(gs, pos)
-    # elif piece.endswith(Queen.NOTATION):
-    #   return Queen.getValidMoves(gs, pos)
-    # elif piece.endswith(King.NOTATION):
-    #   return King.getValidMoves(gs, pos)
-    # elif piece.endswith(Pawn.NOTATION):
-    #   return Pawn.getValidMoves(gs, pos)
-    # else: return []
     pieceClass = self.pieceDict[piece[1]]
     if pieceClass == King:
-
-      pieceClass.getValidMoves(self, gs, pos)
+      return pieceClass.getValidMoves(self, gs, pos)
     else:
-      pieceClass.getValidMoves(gs, pos)
+      return pieceClass.getValidMoves(gs, pos)
 
 
