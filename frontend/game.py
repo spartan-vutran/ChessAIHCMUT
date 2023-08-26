@@ -1,4 +1,5 @@
 import pygame
+import sys
 from .pieces import Rook, Queen, Pawn, Knight, King, Bishop
 from typing import Tuple
 from logic.game import GameState, GameController, Action
@@ -149,6 +150,7 @@ class GameFrontEnd:
         #   running = False
         # # Draw the board
         self.draw()
+      # running = not self.controller.isTerminal(self.gameState)
 
 
   def move(self, action:Action):
@@ -182,7 +184,7 @@ class GameFrontEnd:
     is_valid_move = self.controller.checkValidMove(self.gameState, action)
     if not is_valid_move:
       return False
-    
+
     # TODO: Move piece/ promote queen
     pos_square.occupying_piece = None
     piece.pos = action.tar
@@ -209,6 +211,9 @@ class GameFrontEnd:
 
     # TODO: Update gameState
     self.gameState = self.controller.move(self.gameState, action)
+    if self.controller.isTerminal(self.gameState):
+      print(f"Player {1-self.gameState.turn.value} win")
+      sys.exit()
     print(self.board_to_string())
     print(self.gameState.turn)
     return True

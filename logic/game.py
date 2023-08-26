@@ -300,6 +300,7 @@ class GameController:
     Check if the function is terminal
     """  
     # Find the Kings and their positions
+    gs = copy.deepcopy(gs)
     opponentTurn = Turn.WHITE if gs.turn == Turn.BLACK else Turn.WHITE
     sideColor = "w" if gs.turn == Turn.WHITE else "b"
     kingIndex = self.findPiecesById(gs, f"{sideColor}K")[0]
