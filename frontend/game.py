@@ -85,7 +85,8 @@ class GameFrontEnd:
   def initGame(self):
     pygame.init()
     self.screen = pygame.display.set_mode(settings.WINDOW_SIZE)
-    
+    self.controller = GameController()
+
   def __init__(self):
     self.width = settings.WINDOW_SIZE[0]
     self.height = settings.WINDOW_SIZE[1]
@@ -178,7 +179,7 @@ class GameFrontEnd:
     piece =  pos_square.occupying_piece
     if not piece:
       return False
-    is_valid_move = GameController.checkValidMove(self.gameState, action)
+    is_valid_move = self.controller.checkValidMove(self.gameState, action)
     if not is_valid_move:
       return False
     
@@ -207,7 +208,7 @@ class GameFrontEnd:
       rTar_square.occupying_piece = rPiece
 
     # TODO: Update gameState
-    self.gameState = GameController.move(self.gameState, action)
+    self.gameState = self.controller.move(self.gameState, action)
     print(self.board_to_string())
     print(self.gameState.turn)
     return True
@@ -283,7 +284,7 @@ class GameFrontEnd:
       return False
     
     # TODO: prepare suitable action to make move
-    action = Action(self.selected_piece.pos,(x_column, y_column))
+    action = Move(self.selected_piece.pos,(x_column, y_column))
     if self.selected_piece.notation == ' ' and (x_column == 0  or x_column == 7) :
       action = QueenPromote(self.selected_piece.pos,(x_column, y_column))
     elif self.selected_piece.notation == 'K':
@@ -380,16 +381,10 @@ class GameFrontEnd:
     if self.selected_piece is not None:
       self.get_square_from_pos(self.selected_piece.pos).highlight = True
       # TODO: hightlight valid moves when click piece
-      # for square in self.selected_piece.get_valid_moves(self):
-      #   square.highlight = True
-      validMoves = GameController.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
-      # if validMoves:
-      #   string = '['
-      #   for move in validMoves:
-      #     string += '(' + str(move.tar[0]) + ', ' + str(move.tar[1]) + ')'
-      #   string += ']'
-      #   print(string)
-      for action in validMoves:
+      validMoves = self.controller.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
+      # Filter actions with pos is not selected pieces pos
+      filterActions = [action for action in validMoves if action.pos == self.selected_piece.pos]
+      for action in filterActions:
         square = self.get_square_from_pos(action.tar)
         square.highlight = True
     for square in self.squares:
