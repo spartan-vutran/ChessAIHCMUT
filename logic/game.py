@@ -190,6 +190,27 @@ class GameController:
         ]
     
     return GameState(board, turn)
+  
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+    row, col = pos
+    board = gs.board
+
+    piece = board[row][col]
+    if piece == '':
+      return []
+    if piece.endswith(Rook.NOTATION):
+      return Rook.getValidMoves(gs, pos)
+    elif piece.endswith(Knight.NOTATION):
+      return Knight.getValidMoves(gs, pos)
+    elif piece.endswith(Bishop.NOTATION):
+      return Bishop.getValidMoves(gs, pos)
+    elif piece.endswith(Queen.NOTATION):
+      return Queen.getValidMoves(gs, pos)
+    elif piece.endswith(King.NOTATION):
+      return King.getValidMoves(gs, pos)
+    elif piece.endswith(Pawn.NOTATION):
+      return Pawn.getValidMoves(gs, pos)
+    else: return []
 
 
 

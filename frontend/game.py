@@ -375,6 +375,10 @@ class GameFrontEnd:
       # TODO: hightlight valid moves when click piece
       # for square in self.selected_piece.get_valid_moves(self):
       #   square.highlight = True
+      validMoves = GameController.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
+      for move in validMoves:
+        square = self.get_square_from_pos(move)
+        square.highlight = True
     for square in self.squares:
       square.draw(self.screen)
     pygame.display.update()
