@@ -11,6 +11,7 @@ class Pawn(Piece):
     img_path = 'data/imgs/' + color[0] + '_pawn.png'
     self.img = pygame.image.load(img_path)
     self.img = pygame.transform.scale(self.img, (board.tile_width - 35, board.tile_height - 35))
+    self.notation = 'P'
 
 
   def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:

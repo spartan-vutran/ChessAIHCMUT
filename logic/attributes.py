@@ -5,12 +5,27 @@ class Turn(Enum):
    WHITE = 0
    BLACK = 1
 
-
+#Region: Action
 class Action:
   def __init__(self, pos, tar) -> None:
     self.pos = pos
     self.tar = tar
 
+class Move(Action):
+  def __init__(self, pos, tar):
+    super().__init__(pos, tar)
+
+class QuenPromote(Action):
+  def __init__(self, pos, tar):
+    super().__init__(pos, tar)
+
+class EnterTower(Action):
+  def __init__(self, kPos, kTar, rPos, rTar):
+    super().__init__(kPos, kTar)
+    self.rPos = rPos
+    self.rTar = rTar
+
+#End-region
 
 class Piece:
   def __init__(self):

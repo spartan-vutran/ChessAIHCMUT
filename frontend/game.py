@@ -4,6 +4,7 @@ from typing import Tuple
 from logic.game import GameState, GameController, Action
 from enum import Enum
 from frontend import settings
+from logic.attributes import Action, Move, QuenPromote, EnterTower
 
 class Square:
 	def __init__(self, x, y, width, height):
@@ -152,22 +153,57 @@ class GameFrontEnd:
   def move(self, action:Action):
     for i in self.squares:
       i.highlight = False
+    #clear selected piece
+    self.selected_piece = None
 
+    # TODO: 
+    # check if type of action is Move: 
+        # + check valid: is a piece && valid move
+        # + move piece to target pos
+        # + make move by call controller to update gameState
+    # if type of action is QuenPromote:
+        # + check valid: is a piece && valid move
+        # + move piece to target pos
+        # + promote from pawn to Queen
+        # + make move by call controller to update gameState
+    # if type is EnterTower:
+        # + check valid: is a piece && valid move
+        # + move those piece to target pos
+        # + make move by call controller to update gameState
+
+    # TODO: Check if is valid piece and run valid move
     pos_square =  self.get_square_from_pos(action.pos)
     tar_square = self.get_square_from_pos(action.tar)
 
     piece =  pos_square.occupying_piece
     if not piece:
       return False
-
-    # TODO: Check if piece run valid move
-    is_valid_move = GameController.checkValidMove(self.gameState, Action)
+    is_valid_move = GameController.checkValidMove(self.gameState, action)
     if not is_valid_move:
       return False
     
+    # TODO: Move piece/ promote queen
     pos_square.occupying_piece = None
+    piece.pos = action.tar
     tar_square.occupying_piece = piece
-    self.gameState = GameController.move(self.gameState, Action)
+
+    if isinstance(action, QuenPromote):
+      tar_square.occupying_piece = Queen(
+              action.tar, Turn.WHITE if piece.side.value == 0 else Turn.BLACK, self
+            )
+    elif isinstance(action, EnterTower):
+      rPos_square =  self.get_square_from_pos(action.rPos)
+      rTar_square = self.get_square_from_pos(action.rTar)
+      rPiece =  rPos_square.occupying_piece
+      if not rPiece:
+        return False
+      
+      rPos_square.occupying_piece = None
+      rPiece.pos = action.rTar
+      rTar_square.occupying_piece = rPiece
+
+    # TODO: Update gameState
+    self.gameState = GameController.move(self.gameState, action)
     return True
       
 
@@ -239,7 +275,15 @@ class GameFrontEnd:
   def handlePerSonMove(self, x_column, y_column):
     if self.selected_piece is None:
       return False
+    
+    # TODO: prepare suitable action to make move
     action = Action(self.selected_piece.pos,(x_column, y_column))
+    if self.selected_piece.notation == 'P' and (x_column == 0  or x_column == 7) :
+      action = QuenPromote(self.selected_piece.pos,(x_column, y_column))
+    # elif self.selected_piece.notation == 'K':
+      # if self.selected_piece.x - x_column == 2:
+      #   action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 2), )
+
     return self.move(action)
   
   def handle_click(self, mx, my):
@@ -326,6 +370,7 @@ class GameFrontEnd:
     self.screen.fill('white')
     if self.selected_piece is not None:
       self.get_square_from_pos(self.selected_piece.pos).highlight = True
+      # TODO: hightlight valid moves when click piece
       # for square in self.selected_piece.get_valid_moves(self):
       #   square.highlight = True
     for square in self.squares:

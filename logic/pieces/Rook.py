@@ -12,6 +12,7 @@ class Rook(Piece):
     img_path = 'data/imgs/' + color[0] + '_rook.png'
     self.img = pygame.image.load(img_path)
     self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
+    self.notation = 'R'
 
 
   def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
