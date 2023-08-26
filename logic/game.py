@@ -104,7 +104,7 @@ class GameController:
     return pos in endangredSquares
     
 
-  def _kingSignalForCheckmate(self, gs:GameState, pos:int) -> Tuple:
+  def _kingSignalForCheckmate(self, gs:GameState, pos:Tuple[int]) -> Tuple:
     """
     Params:
     + pos: the position where the King is
@@ -222,11 +222,45 @@ class GameController:
 
     return GameState(board, turn)
   
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
+
+  def isTerminal(self, gs:GameState) -> bool:
+    """
+    Check if the function is terminal
+    """  
+    # Find the Kings and their positions
+    return not self.actions(gs)
+  
+  # def utility(self, gs:GameState, p:Turn)
+
+  def findPiecesById(self, gs:GameState, id: str) -> List[Tuple[int]]:
+    """
+    + id: "wQ"
+    """
+    pieces = []
+    for i, row in enumerate(gs.board):
+      for j, square in enumerate(row):
+        if  square == id:
+          pieces.append((i,j))
+    return pieces
+
+  def getValidMoves(self, gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
     board = gs.board
-
     piece = board[row][col]
+
+    # First check if King is in endanger
+    pieceSide = Turn.WHITE if piece[0] == "w" else Turn.BLACK
+    if piece == '' or gs.turn != pieceSide:
+      return []
+    kPos = self.findPiecesById(gs, f"{piece[0]}K")[0]
+    signal, info = self._kingSignalForCheckmate(gs, kPos)
+    if signal == 1:
+      # The king is endangred but there is still a move
+      return info
+    if signal == 2:
+      # You are checkmated 
+      return []
+
     if piece == '':
       return []
     if piece.endswith(Rook.NOTATION):
