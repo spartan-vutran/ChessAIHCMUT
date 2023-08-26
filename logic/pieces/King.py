@@ -17,7 +17,7 @@ class King(Piece):
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != King.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != King.NOTATION:
       return []
     
     # Get possible moves without legitimate

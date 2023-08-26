@@ -187,7 +187,7 @@ class GameFrontEnd:
     piece.pos = action.tar
     tar_square.occupying_piece = piece
 
-    if isinstance(action, QuenPromote):
+    if isinstance(action, QueenPromote):
       tar_square.occupying_piece = Queen(
               action.tar, Turn.WHITE if piece.side.value == 0 else Turn.BLACK, self
             )
@@ -204,6 +204,7 @@ class GameFrontEnd:
 
     # TODO: Update gameState
     self.gameState = GameController.move(self.gameState, action)
+    print(self.board_to_string())
     return True
       
 
@@ -278,11 +279,13 @@ class GameFrontEnd:
     
     # TODO: prepare suitable action to make move
     action = Action(self.selected_piece.pos,(x_column, y_column))
-    if self.selected_piece.notation == 'P' and (x_column == 0  or x_column == 7) :
-      action = QuenPromote(self.selected_piece.pos,(x_column, y_column))
-    # elif self.selected_piece.notation == 'K':
-      # if self.selected_piece.x - x_column == 2:
-      #   action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 2), )
+    if self.selected_piece.notation == ' ' and (x_column == 0  or x_column == 7) :
+      action = QueenPromote(self.selected_piece.pos,(x_column, y_column))
+    elif self.selected_piece.notation == 'K':
+      if self.selected_piece.y - y_column == 2:
+        action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 2), (self.selected_piece.x, 0), (self.selected_piece.x, 3))
+      elif self.selected_piece.y - y_column == -2:
+        action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 6), (self.selected_piece.x, 7), (self.selected_piece.x, 5))
 
     return self.move(action)
   
@@ -373,6 +376,24 @@ class GameFrontEnd:
       # TODO: hightlight valid moves when click piece
       # for square in self.selected_piece.get_valid_moves(self):
       #   square.highlight = True
+      validMoves = GameController.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
+      for move in validMoves:
+        square = self.get_square_from_pos(move)
+        square.highlight = True
     for square in self.squares:
       square.draw(self.screen)
     pygame.display.update()
+  
+  def board_to_string(self):
+        string =  "    A  B  C  D  E  F  G  H\n"
+        string += "    -----------------------\n"
+        for x in range(8):
+            string += str(8 - x) + " | "
+            for y in range(8):
+                piece = self.gameState.board[x][y]
+                if (piece != ''):
+                    string += piece + ' '
+                else:
+                    string += ".. "
+            string += "\n"
+        return string + "\n"

@@ -6,6 +6,7 @@ from logic.pieces.Knight import Knight
 from logic.pieces.Queen import Queen
 from logic.pieces.King import King
 from logic.pieces.Pawn import Pawn
+from logic.attributes import Action, Move, QueenPromote, EnterTower
 import copy
 
 
@@ -177,18 +178,54 @@ class GameController:
 
   def move(gs: GameState, action: Action) -> GameState:
     turn = Turn.WHITE if gs.turn.value == Turn.BLACK.value else Turn.BLACK
-    board = [
-          ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
-          ['', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
-          ['bP','','','','','','',''],
-          ['','','','','','','',''],
-          ['','','','','','','',''],
-          ['','','','','','','',''],
-          ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
-          ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR'],
-        ]
-    
+    # TODO: 
+    #Action Move:
+    # + move
+    #Action Queen promote
+    # + promote pawn to queen
+    #Action EnterTower
+    # + move King
+    # + move Rook
+    pos = action.pos
+    tar = action.tar
+    board = gs.board
+    player_color = "w" if gs.turn.value == 0 else "b"
+
+    piece = board[pos[0]][pos[1]]
+    board[pos[0]][pos[1]] = ''
+    board[tar[0]][tar[1]] = piece
+
+    if isinstance(action, QueenPromote):
+      board[tar[0]][tar[1]] = player_color + 'Q'
+    elif isinstance(action, EnterTower):
+      rPos = action.rPos
+      rTar = action.rTar
+      rPiece = piece = board[rPos[0]][rPos[1]]
+      board[rPos[0]][rPos[1]] = ''
+      board[rTar[0]][rTar[1]] = rPiece
+
     return GameState(board, turn)
+  
+  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
+    row, col = pos
+    board = gs.board
+
+    piece = board[row][col]
+    if piece == '':
+      return []
+    if piece.endswith(Rook.NOTATION):
+      return Rook.getValidMoves(gs, pos)
+    elif piece.endswith(Knight.NOTATION):
+      return Knight.getValidMoves(gs, pos)
+    elif piece.endswith(Bishop.NOTATION):
+      return Bishop.getValidMoves(gs, pos)
+    elif piece.endswith(Queen.NOTATION):
+      return Queen.getValidMoves(gs, pos)
+    elif piece.endswith(King.NOTATION):
+      return King.getValidMoves(gs, pos)
+    elif piece.endswith(Pawn.NOTATION):
+      return Pawn.getValidMoves(gs, pos)
+    else: return []
 
 
 
