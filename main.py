@@ -30,8 +30,8 @@ def main():
   # print(eval_value)
   gc = GameController()
 
-  gc.actions(gs)
-
+  hello = gc.isTerminal(gs)
+  print(hello)
   # gc.checkValidMove(gs, EnterTower((0,4),(0,2),(0,0),(0,3)))
 
 if __name__ == '__main__':
