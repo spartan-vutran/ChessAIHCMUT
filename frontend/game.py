@@ -4,7 +4,7 @@ from typing import Tuple
 from logic.game import GameState, GameController, Action
 from enum import Enum
 from frontend import settings
-from logic.attributes import Action, Move, QuenPromote, EnterTower
+from logic.attributes import Action, Move, QueenPromote, EnterTower
 
 class Square:
 	def __init__(self, x, y, width, height):
@@ -187,7 +187,7 @@ class GameFrontEnd:
     piece.pos = action.tar
     tar_square.occupying_piece = piece
 
-    if isinstance(action, QuenPromote):
+    if isinstance(action, QueenPromote):
       tar_square.occupying_piece = Queen(
               action.tar, Turn.WHITE if piece.side.value == 0 else Turn.BLACK, self
             )
@@ -278,11 +278,13 @@ class GameFrontEnd:
     
     # TODO: prepare suitable action to make move
     action = Action(self.selected_piece.pos,(x_column, y_column))
-    if self.selected_piece.notation == 'P' and (x_column == 0  or x_column == 7) :
-      action = QuenPromote(self.selected_piece.pos,(x_column, y_column))
-    # elif self.selected_piece.notation == 'K':
-      # if self.selected_piece.x - x_column == 2:
-      #   action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 2), )
+    if self.selected_piece.notation == ' ' and (x_column == 0  or x_column == 7) :
+      action = QueenPromote(self.selected_piece.pos,(x_column, y_column))
+    elif self.selected_piece.notation == 'K':
+      if self.selected_piece.y - y_column == 2:
+        action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 2), (self.selected_piece.x, 0), (self.selected_piece.x, 3))
+      elif self.selected_piece.y - y_column == -2:
+        action = EnterTower(self.selected_piece.pos, (self.selected_piece.x, 6), (self.selected_piece.x, 7), (self.selected_piece.x, 5))
 
     return self.move(action)
   
