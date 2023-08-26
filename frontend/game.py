@@ -185,6 +185,8 @@ class GameFrontEnd:
     # TODO: Move piece/ promote queen
     pos_square.occupying_piece = None
     piece.pos = action.tar
+    piece.x = action.tar[0]
+    piece.y = action.tar[1]
     tar_square.occupying_piece = piece
 
     if isinstance(action, QueenPromote):
@@ -200,11 +202,14 @@ class GameFrontEnd:
       
       rPos_square.occupying_piece = None
       rPiece.pos = action.rTar
+      rPiece.x = action.rTar[0]
+      rPiece.y = action.rTar[1]
       rTar_square.occupying_piece = rPiece
 
     # TODO: Update gameState
     self.gameState = GameController.move(self.gameState, action)
     print(self.board_to_string())
+    print(self.gameState.turn)
     return True
       
 
@@ -294,11 +299,12 @@ class GameFrontEnd:
     y = mx // self.tile_height
     print(x, y)
     clicked_square = self.get_square_from_pos((x, y))
-
+    
     if self.selected_piece is None:
       if clicked_square.occupying_piece is not None:
         if clicked_square.occupying_piece.side.value == self.gameState.turn.value:
           self.selected_piece = clicked_square.occupying_piece
+          print(self.selected_piece)
 
     elif self.handlePerSonMove(x, y):
       # self.gameState.turn = Turn.WHITE if self.gameState.turn == Turn.BLACK else Turn.BLACK
@@ -377,8 +383,14 @@ class GameFrontEnd:
       # for square in self.selected_piece.get_valid_moves(self):
       #   square.highlight = True
       validMoves = GameController.getValidMoves(self.gameState, (self.selected_piece.x, self.selected_piece.y))
-      for move in validMoves:
-        square = self.get_square_from_pos(move)
+      if validMoves:
+        string = '['
+        for move in validMoves:
+          string += '(' + str(move.tar[0]) + ', ' + str(move.tar[1]) + ')'
+        string += ']'
+        print(string)
+      for action in validMoves:
+        square = self.get_square_from_pos(action.tar)
         square.highlight = True
     for square in self.squares:
       square.draw(self.screen)
