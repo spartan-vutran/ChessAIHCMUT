@@ -1,7 +1,7 @@
 import argparse
 from frontend.game import GameFrontEnd
 from logic.game import GameController
-from logic.attributes import Turn, GameState
+from logic.attributes import Turn, GameState, QueenPromote, EnterTower
 from logic.heuristic import Heuristic
 
 def main():
@@ -20,7 +20,7 @@ def main():
     ['','','','','','','',''],
     ['','','','','','','',''],
     ['','','','','','','',''],
-    ['', '','','','','','',''],
+    ['', '','bP','','','','',''],
     ['', '','','','wK','','',''],
   ]
   turn = Turn.BLACK
@@ -30,7 +30,9 @@ def main():
   # print(eval_value)
   gc = GameController()
 
-  gc.actions(gs)
+  # gc.actions(gs)
+
+  gc.checkValidMove(gs, EnterTower((0,4),(0,2),(0,0),(0,3)))
 
 if __name__ == '__main__':
   main()
