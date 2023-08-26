@@ -3,7 +3,8 @@ from logic.attributes import Piece, GameState
 from typing import Tuple, List
 
 class Queen(Piece):
-  notation = 'Q'
+  NOTATION = 'Q'
+  VALUE = 900
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -15,7 +16,7 @@ class Queen(Piece):
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Queen.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Queen.NOTATION:
       return []
 
     output = []

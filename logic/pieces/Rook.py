@@ -4,7 +4,8 @@ from logic.attributes import Piece, GameState
 
 
 class Rook(Piece):
-  notation = 'R'
+  NOTATION = 'R'
+  VALUE = 500
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -17,7 +18,7 @@ class Rook(Piece):
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Rook.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Rook.NOTATION:
       return []
 
     validMoves = []

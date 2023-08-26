@@ -3,7 +3,8 @@ from typing import Tuple, List
 from logic.attributes import Piece, GameState
 
 class Bishop(Piece):
-  notation = 'B'
+  NOTATION = 'B'
+  VALUE = 330
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
@@ -16,7 +17,7 @@ class Bishop(Piece):
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
     # Check if the piece is valid
-    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Bishop.notation:
+    if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != Bishop.NOTATION:
       return []
 
     output = []
