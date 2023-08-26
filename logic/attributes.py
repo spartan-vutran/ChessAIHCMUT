@@ -15,7 +15,7 @@ class Move(Action):
   def __init__(self, pos, tar):
     super().__init__(pos, tar)
 
-class QuenPromote(Action):
+class QueenPromote(Action):
   def __init__(self, pos, tar):
     super().__init__(pos, tar)
 
