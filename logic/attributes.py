@@ -11,19 +11,32 @@ class Action:
     self.pos = pos
     self.tar = tar
 
+
 class Move(Action):
   def __init__(self, pos, tar):
     super().__init__(pos, tar)
+  def __eq__(self, other):
+    if isinstance(other, Move):
+      return self.pos == other.pos and self.tar == other.tar
+    return False
 
 class QueenPromote(Action):
   def __init__(self, pos, tar):
     super().__init__(pos, tar)
+  def __eq__(self, other):
+    if isinstance(other, QueenPromote):
+      return self.pos == other.pos and self.tar == other.tar
+    return False
 
 class EnterTower(Action):
   def __init__(self, kPos, kTar, rPos, rTar):
     super().__init__(kPos, kTar)
     self.rPos = rPos
     self.rTar = rTar
+  def __eq__(self, other):
+    if isinstance(other, EnterTower):
+      return self.pos == other.pos and self.tar == other.tar and self.rPos == other.rPos and self.rTar == other.rTar
+    return False
 
 
 class Piece:

@@ -179,9 +179,17 @@ class GameController:
     return actions
 
 
-  def checkValidMove(gs: GameState, action: Action) -> bool:
-    
-    return True
+  def checkValidMove(self, gs: GameState, action: Action) -> bool:
+    row, col = action.pos
+    square = gs.board[row][col]
+    if square == '':
+      return False
+    pieceClass = self.pieceDict[square[1]]
+    if pieceClass == King:
+      validActions = pieceClass.getValidMoves(self, gs, (row,col))
+    else:
+      validActions = pieceClass.getValidMoves(gs, (row,col))
+    return action in validActions
 
 
   def move(gs: GameState, action: Action) -> GameState:
