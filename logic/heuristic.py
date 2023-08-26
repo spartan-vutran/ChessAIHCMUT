@@ -5,7 +5,7 @@ from logic.pieces.Knight import Knight
 from logic.pieces.Queen import Queen
 from logic.pieces.King import King
 from logic.pieces.Pawn import Pawn
-from logic.attributes import Turn, Action, GameState
+from logic.attributes import GameState
 
 class Heuristic:
 
