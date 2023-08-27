@@ -1,4 +1,6 @@
 import pygame
+import sys
+import random
 from .pieces import Rook, Queen, Pawn, Knight, King, Bishop
 from typing import Tuple
 from logic.game import GameState, GameController, Action
@@ -66,6 +68,14 @@ class Agent(Player):
   def getMove(self, gameState):
     return Action((0,1),(2,0))
 
+class RandomAgent(Player):
+  def __init__(self):
+    self.controller = GameController()
+
+  def getMove(self, gs: GameState):
+    actions = self.controller.actions(gs)
+    return random.choice(actions)
+
 class Person(Player):
   def __init__(self):
     pass
@@ -113,7 +123,8 @@ class GameFrontEnd:
       self.player2 = Agent()
     else: 
       self.player1 = Person()
-      self.player2 = Agent()
+      # self.player2 = Agent()
+      self.player2 = RandomAgent()
     self.players = [self.player1, self.player2]
 
   def play(self):
@@ -124,7 +135,7 @@ class GameFrontEnd:
     while running:
       turn = self.gameState.turn
       curPlayer = self.players[turn.value]
-      if isinstance(curPlayer, Agent):
+      if isinstance(curPlayer, Agent) or isinstance(curPlayer, RandomAgent):
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")
@@ -149,6 +160,7 @@ class GameFrontEnd:
         #   running = False
         # # Draw the board
         self.draw()
+      # running = not self.controller.isTerminal(self.gameState)
 
 
   def move(self, action:Action):
@@ -182,7 +194,7 @@ class GameFrontEnd:
     is_valid_move = self.controller.checkValidMove(self.gameState, action)
     if not is_valid_move:
       return False
-    
+
     # TODO: Move piece/ promote queen
     pos_square.occupying_piece = None
     piece.pos = action.tar
@@ -209,6 +221,9 @@ class GameFrontEnd:
 
     # TODO: Update gameState
     self.gameState = self.controller.move(self.gameState, action)
+    if self.controller.isTerminal(self.gameState):
+      print(f"Player {1-self.gameState.turn.value} win")
+      sys.exit()
     print(self.board_to_string())
     print(self.gameState.turn)
     return True
