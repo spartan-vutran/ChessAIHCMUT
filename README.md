@@ -87,3 +87,12 @@ Piece table
         [-30,-40,-40,-50,-50,-40,-40,-30]
     ])
 ```
+
+
+## 3. Todos
++ [ ] Options for running agents.
+    + [ ] Display UI/UX.
+    + [ ] Display time up.
++ [ ] Optimize for searching.
+  + unmove()
++ [ ] Time up for searching for agent.

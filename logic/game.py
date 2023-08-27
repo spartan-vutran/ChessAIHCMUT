@@ -193,6 +193,7 @@ class GameController:
       return False
     return True
 
+
   def utility(self, gs:GameState, p:Turn) -> float:
     pass
 

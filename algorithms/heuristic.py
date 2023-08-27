@@ -95,19 +95,19 @@ class Heuristic:
     # The table is the 2d numpy array used for the scoring. Example: Heuristics.PAWN_TABLE
     @staticmethod
     def get_piece_position_score(gs: GameState, piece_notation, table):
-        white = 0
-        black = 0
-        for x in range(8):
-            for y in range(8):
-                piece = gs.board[x][y]
-                if (piece != ''):
-                    if piece.endswith(piece_notation):
-                        if (piece.startswith("w")):
-                            white += table[x][y]
-                        else:
-                            black += table[7 - x][y]
+      white = 0
+      black = 0
+      for x in range(8):
+          for y in range(8):
+              piece = gs.board[x][y]
+              if (piece != ''):
+                  if piece.endswith(piece_notation):
+                      if (piece.startswith("w")):
+                          white += table[x][y]
+                      else:
+                          black += table[7 - x][y]
 
-        return white - black
+      return white - black
 
     @staticmethod
     def get_material_score(gs: GameState):

@@ -10,11 +10,13 @@ class SearchAlgo:
     def searchMove(gs: GameState) -> Action:
         pass
 
+
 class AlphaBetaAlgo(SearchAlgo):
     INFINITE = 10000000
     def __init__(self, depth = 2):
        self.game = GameController()
        self.depth = depth
+
 
     def searchMove(self, gs: GameState) -> Action:
         best_move = None
@@ -46,6 +48,7 @@ class AlphaBetaAlgo(SearchAlgo):
 
         return best_move
     
+
     def maxValue(self, gs: GameState, depth, alpha, beta):
         if (depth == 0): #or self.game.isTerminal(gs)
             return Heuristic.eval(gs)
@@ -63,6 +66,7 @@ class AlphaBetaAlgo(SearchAlgo):
 
         return best_score
     
+
     def minValue(self, gs: GameState, depth, alpha, beta):
         if (depth == 0):
             return Heuristic.eval(gs)
@@ -80,11 +84,14 @@ class AlphaBetaAlgo(SearchAlgo):
 
         return best_score
     
+
 class MinMaxAlgo(SearchAlgo):
     INFINITE = 10000000
+    
     def __init__(self, depth = 2):
        self.game = GameController()
        self.depth = depth
+
 
     def searchMove(self, gs: GameState) -> Action:
         best_move = None
@@ -116,6 +123,7 @@ class MinMaxAlgo(SearchAlgo):
 
         return best_move
     
+    
     def maxValue(self, gs: GameState, depth):
         if (depth == 0):
             return Heuristic.eval(gs)
@@ -130,6 +138,7 @@ class MinMaxAlgo(SearchAlgo):
 
         return best_score
     
+
     def minValue(self, gs: GameState, depth):
         if (depth == 0):
             return Heuristic.eval(gs)
