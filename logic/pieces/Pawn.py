@@ -14,7 +14,7 @@ class Pawn(Piece):
     self.notation = 'P'
 
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
+  def getValidMoves(gc, gs: GameState, pos:Tuple[int], notCheckEndanger: bool = False) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
 
@@ -28,15 +28,17 @@ class Pawn(Piece):
     range = 1
     if (row == 1 and player_color == "b") or (row == 6 and player_color == "w"):
       range = 2
-    while abs(diff) <= range:
+    while abs(diff) <= range and not notCheckEndanger: #TO FIX: Fix added capture move to separate
       tar_row = row + diff
       tar_square = gs.board[tar_row][col]
       if tar_square != '':
         break
       if tar_row == 0 or tar_row == 7: #Queen Promotion here
-        valid_moves.append(QueenPromote((row,col),(tar_row, col)))
+        action = QueenPromote((row,col),(tar_row, col))
       else:
-        valid_moves.append(Move((row,col),(tar_row, col)))
+        action = Move((row,col),(tar_row, col))
+      if not gc._isKingInEndanger(gs, action):
+        yield action
       diff += diff 
     
     # Checking capture diagonally
@@ -50,10 +52,12 @@ class Pawn(Piece):
       if tar_row > 7 or tar_row < 0 or tar_col > 7 or tar_col < 0:
         continue
       tar_square = gs.board[tar_row][tar_col]
-      if tar_square != '' and tar_square[0] != player_color:
-        valid_moves.append(Move((row,col),(tar_row, tar_col)))
-    
-    return valid_moves
+      if tar_row == 0 or tar_row == 7:
+        action = QueenPromote((row,col),(tar_row, tar_col))
+      else: 
+        action = Move((row,col),(tar_row, tar_col))
+      if tar_square != '' and tar_square[0] != player_color and (notCheckEndanger or not gc._isKingInEndanger(gs, action)):
+          yield  action
 
 	# def get_possible_moves(self, board):
 	# 	output = []

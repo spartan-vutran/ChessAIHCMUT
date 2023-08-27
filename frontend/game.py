@@ -74,7 +74,9 @@ class RandomAgent(Player):
     self.controller = GameController()
 
   def getMove(self, gs: GameState):
-    actions = self.controller.actions(gs)
+    actions = []
+    for action in self.controller.actions(gs):
+       actions.append(action)
     return random.choice(actions)
 
 class AlgoAgent(Player):

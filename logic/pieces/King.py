@@ -23,8 +23,11 @@ class King(Piece):
 			gs.board[row][0], gs.board[row][3] =  gs.board[row][3], gs.board[row][0] 
 
 
-	def getValidMoves(gc, gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:
-		return King.getNormalMoves(gc, gs, pos) + King.getEnterTowerMoves(gc, gs, pos)
+	def getValidMoves(gc, gs: GameState, pos:Tuple[int]) -> List[Action]:
+		actions = []
+		for action in King.getNormalMoves(gc, gs, pos):
+			actions.append(action)
+		return actions + King.getEnterTowerMoves(gc, gs, pos)
 
 
 	def getNormalMoves(gc, gs: GameState, pos:Tuple[int], notCheckEndanger: bool = False) -> List[Tuple[int]]:
@@ -33,13 +36,11 @@ class King(Piece):
 		"""
 		row, col = pos
 		player_color = "w" if gs.turn.value == 0 else "b"
-		opponentTurn = Turn.WHITE if gs.turn == Turn.BLACK else Turn.BLACK
 		# Check if the piece is valid
 		if gs.board[row][col][0] != player_color or  gs.board[row][col][1] != King.NOTATION:
 			return []
 
 		# Get possible moves without legitimate
-		possibleMoves = []
 		for i in range(-1,2):
 			for j in range(-1,2):
 				if i == 0 and j == 0:
@@ -50,10 +51,10 @@ class King(Piece):
 				square = gs.board[tarRow][tarCol]
 				if square != "" and square[0] == player_color:
 					continue
-				if not notCheckEndanger and gc._isEndangered(gs, (tarRow, tarCol), opponentTurn):
+				action = Move((row,col),(tarRow, tarCol))
+				if not notCheckEndanger and gc._isKingInEndanger(gs, action):
 					continue
-				possibleMoves.append(Move((row,col),(tarRow, tarCol)))
-		return possibleMoves
+				yield action
 
 
 	def getEnterTowerMoves(gc, gs: GameState, pos:Tuple[int]) -> List[Tuple[int]]:

@@ -14,7 +14,7 @@ class Knight(Piece):
     self.notation = 'N'
 
 
-  def getValidMoves(gs: GameState, pos:Tuple[int]) -> List[Action]:
+  def getValidMoves(gc, gs: GameState, pos:Tuple[int], notCheckEndanger: bool = False) -> List[Action]:
     row, col = pos
     player_color = "w" if gs.turn.value == 0 else "b"
 
@@ -38,7 +38,9 @@ class Knight(Piece):
           tarSquare = gs.board[tarRow][tarCol]
           if tarSquare != '' and tarSquare[0] == player_color:
             continue
-          validMoves.append(Move((row,col),(tarRow, tarCol)))
+          action = Move((row,col),(tarRow, tarCol))
+          if notCheckEndanger or not gc._isKingInEndanger(gs, action):
+            yield action
       index = index + 1
     
     return validMoves
