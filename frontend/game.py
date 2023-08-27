@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 from .pieces import Rook, Queen, Pawn, Knight, King, Bishop
 from typing import Tuple
 from logic.game import GameState, GameController, Action
@@ -67,6 +68,14 @@ class Agent(Player):
   def getMove(self, gameState):
     return Action((0,1),(2,0))
 
+class RandomAgent(Player):
+  def __init__(self):
+    self.controller = GameController()
+
+  def getMove(self, gs: GameState):
+    actions = self.controller.actions(gs)
+    return random.choice(actions)
+
 class Person(Player):
   def __init__(self):
     pass
@@ -114,7 +123,8 @@ class GameFrontEnd:
       self.player2 = Agent()
     else: 
       self.player1 = Person()
-      self.player2 = Agent()
+      # self.player2 = Agent()
+      self.player2 = RandomAgent()
     self.players = [self.player1, self.player2]
 
   def play(self):
@@ -125,7 +135,7 @@ class GameFrontEnd:
     while running:
       turn = self.gameState.turn
       curPlayer = self.players[turn.value]
-      if isinstance(curPlayer, Agent):
+      if isinstance(curPlayer, Agent) or isinstance(curPlayer, RandomAgent):
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")

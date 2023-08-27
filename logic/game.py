@@ -92,7 +92,7 @@ class GameController:
       piece = gs.board[posRow][posCol]
       pieceClass = self.pieceDict[piece[1]]
       if pieceClass == King:
-        validMoves = pieceClass.getNormalMoves(gs, (posRow,posCol)) # TOFIX: It is a bit odd here 
+        validMoves = pieceClass.getNormalMoves(self, gs, (posRow,posCol), True) # TOFIX: It is a bit odd here 
       else:
         validMoves = pieceClass.getValidMoves(gs, (posRow,posCol))
 
@@ -329,6 +329,7 @@ class GameController:
         if  square == id:
           pieces.append((i,j))
     return pieces
+
 
   def getValidMoves(self, gs: GameState, pos:Tuple[int]) -> List[Action]:
     row, col = pos
