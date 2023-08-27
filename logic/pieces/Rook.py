@@ -5,7 +5,8 @@ from logic.attributes import Piece, GameState, Move, Action
 
 class Rook(Piece):
   NOTATION = 'R'
-  VALUE = 500
+  # VALUE = 500
+  VALUE = 50
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 

@@ -4,7 +4,8 @@ from logic.attributes import Piece, GameState, Turn, Action, Move, EnterTower
 import copy 
 class King(Piece):
 	NOTATION = 'K'
-	VALUE = 20000
+	# VALUE = 20000
+	VALUE = 900
 	def __init__(self, pos, color, board):
 		super().__init__(pos, color, board)
 

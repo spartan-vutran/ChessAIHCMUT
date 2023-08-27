@@ -4,7 +4,8 @@ from typing import Tuple, List
 
 class Queen(Piece):
   NOTATION = 'Q'
-  VALUE = 900
+  # VALUE = 900
+  VALUE = 90
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 

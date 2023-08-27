@@ -4,7 +4,8 @@ from logic.attributes import Piece, GameState, Move, Action
 
 class Knight(Piece):
   NOTATION = 'N'
-  VALUE = 320
+  # VALUE = 320
+  VALUE = 30
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
