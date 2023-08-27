@@ -63,14 +63,13 @@ class Turn(Enum):
    WHITE = 0
    BLACK = 1
 
+
 class Agent(Player):
   def __init__(self):
     pass
 
-  def getMove(self, gameState):
-    return Action((0,1),(2,0))
 
-class RandomAgent(Player):
+class RandomAgent(Agent):
   def __init__(self):
     self.controller = GameController()
 
@@ -79,13 +78,15 @@ class RandomAgent(Player):
     for action in self.controller.actions(gs):
        actions.append(action)
     return random.choice(actions)
+  
 
-class AlgoAgent(Player):
+class AlgoAgent(Agent):
   def __init__(self, algorithm: SearchAlgo):
     self.algo = algorithm
 
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
+  
 
 class EasyAgent(AlgoAgent):
   def __init__(self, algorithm: SearchAlgo):
@@ -94,6 +95,7 @@ class EasyAgent(AlgoAgent):
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
   
+  
 class NormalAgent(AlgoAgent):
   def __init__(self, algorithm: SearchAlgo):
     super().__init__(algorithm)
@@ -101,12 +103,14 @@ class NormalAgent(AlgoAgent):
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
 
+
 class HardAgent(AlgoAgent):
   def __init__(self, algorithm: SearchAlgo):
     super().__init__(algorithm)
 
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
+
 
 class Person(Player):
   def __init__(self):
@@ -147,6 +151,7 @@ class GameFrontEnd:
 
   def setUpPlayer(self, mode = 'personvsagent'):
     #  TODO: Mock choosing agents
+    self.mode = mode
     if mode == 'personvspersion':
       self.player1 = Person()
       self.player2 = Person()
@@ -161,19 +166,25 @@ class GameFrontEnd:
       self.player2 = HardAgent(AlphaBetaAlgo(2))
     self.players = [self.player1, self.player2]
 
+
   def play(self):
     """
       Control turn between agents or between agent and player
     """
     running = True
     while running:
+      if self.mode == 'agentvsagent':
+        for event in pygame.event.get():
+          # Quit the game if the user presses the close button
+          if event.type == pygame.QUIT:
+            running = False
+      self.draw()
       turn = self.gameState.turn
       curPlayer = self.players[turn.value]
-      if isinstance(curPlayer, Agent) or isinstance(curPlayer, RandomAgent) or isinstance(curPlayer, AlgoAgent):
+      if isinstance(curPlayer, Agent):
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")
-        time.sleep(1)
       else:
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -194,7 +205,7 @@ class GameFrontEnd:
         #   print('Black wins!')
         #   running = False
         # # Draw the board
-      self.draw()
+      # self.draw()
       # running = not self.controller.isTerminal(self.gameState)
 
 
