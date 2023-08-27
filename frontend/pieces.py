@@ -13,7 +13,7 @@ class Queen(Piece):
 	def __init__(self, pos, side, board):
 		super().__init__(pos, side, board)
 
-		img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_queen.png'
+		img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_queen.png'
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
 
@@ -23,7 +23,7 @@ class Rook(Piece):
 	def __init__(self, pos, side, board):
 		super().__init__(pos, side, board)
 
-		img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_rook.png'
+		img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_rook.png'
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
 
@@ -33,7 +33,7 @@ class Pawn(Piece):
 	def __init__(self, pos, side, board):
 		super().__init__(pos, side, board)
 
-		img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_pawn.png'
+		img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_pawn.png'
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.tile_width - 35, board.tile_height - 35))
 
@@ -43,7 +43,7 @@ class Knight(Piece):
 	def __init__(self, pos, side, board):
 		super().__init__(pos, side, board)
 
-		img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_knight.png'
+		img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_knight.png'
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
 
@@ -54,7 +54,7 @@ class King(Piece):
   def __init__(self, pos, side, board):
     super().__init__(pos, side, board)
 
-    img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_king.png'
+    img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_king.png'
     self.img = pygame.image.load(img_path)
     self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
 
@@ -83,7 +83,7 @@ class Bishop(Piece):
 	def __init__(self, pos, side, board):
 		super().__init__(pos, side, board)
 
-		img_path = 'data/imgs/' + ('w' if self.side.value == 0 else 'b') + '_bishop.png'
+		img_path = 'frontend/imgs/' + ('w' if self.side.value == 0 else 'b') + '_bishop.png'
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.tile_width - 20, board.tile_height - 20))
 
