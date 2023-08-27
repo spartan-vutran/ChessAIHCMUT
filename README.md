@@ -6,3 +6,5 @@ From root, run
 ```bash
 python main.py
 ```
+
+## 2. Heuristic function
