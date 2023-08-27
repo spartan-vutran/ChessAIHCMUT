@@ -18,27 +18,27 @@ class AlphaBetaAlgo(SearchAlgo):
 
     def searchMove(self, gs: GameState) -> Action:
         best_move = None
-        best_score = -MinMaxAlgo.INFINITE
         turn = gs.turn
+        best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            if not self.game.checkValidMove(gs, move):
+            gsCopy = copy.deepcopy(gs)
+            if not self.game.checkValidMove(gsCopy, move):
                 continue
             eval_value = Heuristic.eval(gs)
             
             print(self.game.board_to_string(gs.board))
             print(eval_value)
-            gs = self.game.move(gs, move)
-            print(self.game.board_to_string(gs.board))
+            gsCopy = self.game.move(gs, move)
+            print(self.game.board_to_string(gsCopy.board))
 
-            if gs.turn == Turn.WHITE:
-                score = self.maxValue(gs, self.depth, -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE)
+            if turn == Turn.WHITE:
+                score = self.maxValue(gsCopy, self.depth, -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE)
                 if (score > best_score):
                     best_score = score
                     best_move = move
             else: 
-                score = self.minValue(gs, self.depth, -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE)
+                score = self.minValue(gsCopy, self.depth, -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE)
                 if (score < best_score):
                     best_score = score
                     best_move = move
@@ -88,27 +88,27 @@ class MinMaxAlgo(SearchAlgo):
 
     def searchMove(self, gs: GameState) -> Action:
         best_move = None
-        best_score = -MinMaxAlgo.INFINITE
         turn = gs.turn
+        best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            if not self.game.checkValidMove(gs, move):
+            gsCopy = copy.deepcopy(gs)
+            if not self.game.checkValidMove(gsCopy, move):
                 continue
             eval_value = Heuristic.eval(gs)
             
             print(self.game.board_to_string(gs.board))
             print(eval_value)
-            gs = self.game.move(gs, move)
-            print(self.game.board_to_string(gs.board))
+            gsCopy = self.game.move(gs, move)
+            print(self.game.board_to_string(gsCopy.board))
 
-            if gs.turn == Turn.WHITE:
-                score = self.maxValue(gs, self.depth)
+            if turn == Turn.WHITE:
+                score = self.maxValue(gsCopy, self.depth)
                 if (score > best_score):
                     best_score = score
                     best_move = move
             else: 
-                score = self.minValue(gs, self.depth)
+                score = self.minValue(gsCopy, self.depth)
                 if (score < best_score):
                     best_score = score
                     best_move = move

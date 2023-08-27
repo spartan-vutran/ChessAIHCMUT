@@ -86,9 +86,9 @@ class Heuristic:
         bishops = Heuristic.get_piece_position_score(gs, Bishop.NOTATION, Heuristic.BISHOP_TABLE)
         rooks = Heuristic.get_piece_position_score(gs, Rook.NOTATION, Heuristic.ROOK_TABLE)
         queens = Heuristic.get_piece_position_score(gs, Queen.NOTATION, Heuristic.QUEEN_TABLE)
-        kings = Heuristic.get_piece_position_score(gs, King.NOTATION, Heuristic.KING_TABLE)
+        # kings = Heuristic.get_piece_position_score(gs, King.NOTATION, Heuristic.KING_TABLE)
 
-        return material + pawns + knights + bishops + rooks + queens + kings
+        return material + pawns + knights + bishops + rooks + queens
 
     # Returns the score for the position of the given type of piece.
     # A piece type can for example be: pieces.Pawn.PIECE_TYPE.
