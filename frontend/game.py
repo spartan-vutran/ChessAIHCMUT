@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import time
 from .pieces import Rook, Queen, Pawn, Knight, King, Bishop
 from typing import Tuple
 from logic.game import GameState, GameController, Action
@@ -150,7 +151,8 @@ class GameFrontEnd:
       self.player1 = Person()
       self.player2 = Person()
     elif mode == 'agentvsagent':
-      self.player1 = EasyAgent(MinMaxAlgo(2))
+      # self.player1 = EasyAgent(MinMaxAlgo(2))
+      self.player1 = RandomAgent()
       self.player2 = NormalAgent(AlphaBetaAlgo(2))
     else: 
       self.player1 = Person()
@@ -171,6 +173,7 @@ class GameFrontEnd:
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")
+        time.sleep(1)
       else:
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -191,7 +194,7 @@ class GameFrontEnd:
         #   print('Black wins!')
         #   running = False
         # # Draw the board
-        self.draw()
+      self.draw()
       # running = not self.controller.isTerminal(self.gameState)
 
 
