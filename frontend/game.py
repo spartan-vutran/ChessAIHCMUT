@@ -7,6 +7,7 @@ from logic.game import GameState, GameController, Action
 from enum import Enum
 from frontend import settings
 from logic.attributes import Action, Move, QueenPromote, EnterTower
+from algorithms.searchAlgo import MinMaxAlgo, SearchAlgo, AlphaBetaAlgo
 
 class Square:
 	def __init__(self, x, y, width, height):
@@ -76,6 +77,34 @@ class RandomAgent(Player):
     actions = self.controller.actions(gs)
     return random.choice(actions)
 
+class AlgoAgent(Player):
+  def __init__(self, algorithm: SearchAlgo):
+    self.algo = algorithm
+
+  def getMove(self, gs: GameState):
+    return self.algo.searchMove(gs)
+
+class EasyAgent(AlgoAgent):
+  def __init__(self, algorithm: SearchAlgo):
+    super().__init__(algorithm)
+  
+  def getMove(self, gs: GameState):
+    return self.algo.searchMove(gs)
+  
+class NormalAgent(AlgoAgent):
+  def __init__(self, algorithm: SearchAlgo):
+    super().__init__(algorithm)
+
+  def getMove(self, gs: GameState):
+    return self.algo.searchMove(gs)
+
+class HardAgent(AlgoAgent):
+  def __init__(self, algorithm: SearchAlgo):
+    super().__init__(algorithm)
+
+  def getMove(self, gs: GameState):
+    return self.algo.searchMove(gs)
+
 class Person(Player):
   def __init__(self):
     pass
@@ -119,12 +148,13 @@ class GameFrontEnd:
       self.player1 = Person()
       self.player2 = Person()
     elif mode == 'agentvsagent':
-      self.player1 = Agent()
-      self.player2 = Agent()
+      self.player1 = EasyAgent(MinMaxAlgo(2))
+      self.player2 = NormalAgent(AlphaBetaAlgo(2))
     else: 
       self.player1 = Person()
       # self.player2 = Agent()
-      self.player2 = RandomAgent()
+      # self.player2 = RandomAgent()
+      self.player2 = HardAgent(AlphaBetaAlgo(2))
     self.players = [self.player1, self.player2]
 
   def play(self):
@@ -135,7 +165,7 @@ class GameFrontEnd:
     while running:
       turn = self.gameState.turn
       curPlayer = self.players[turn.value]
-      if isinstance(curPlayer, Agent) or isinstance(curPlayer, RandomAgent):
+      if isinstance(curPlayer, Agent) or isinstance(curPlayer, RandomAgent) or isinstance(curPlayer, AlgoAgent):
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")

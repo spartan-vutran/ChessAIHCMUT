@@ -350,5 +350,18 @@ class GameController:
       return pieceClass.getValidMoves(self, gs, pos)
     else:
       return pieceClass.getValidMoves(gs, pos)
-
+  
+  def board_to_string(self, board):
+        string =  "    A  B  C  D  E  F  G  H\n"
+        string += "    -----------------------\n"
+        for x in range(8):
+            string += str(8 - x) + " | "
+            for y in range(8):
+                piece = board[x][y]
+                if (piece != ''):
+                    string += piece + ' '
+                else:
+                    string += ".. "
+            string += "\n"
+        return string + "\n"
 
