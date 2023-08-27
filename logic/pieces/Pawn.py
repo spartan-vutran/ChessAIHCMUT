@@ -4,7 +4,8 @@ from logic.attributes import Piece, GameState, QueenPromote, Move, Action
 
 class Pawn(Piece):
   NOTATION = 'P'
-  VALUE = 100
+#   VALUE = 100
+  VALUE = 10
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 

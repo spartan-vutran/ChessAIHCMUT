@@ -4,7 +4,8 @@ from logic.attributes import Piece, GameState, Move, Action
 
 class Bishop(Piece):
   NOTATION = 'B'
-  VALUE = 330
+  # VALUE = 330
+  VALUE = 30
   def __init__(self, pos, color, board):
     super().__init__(pos, color, board)
 
