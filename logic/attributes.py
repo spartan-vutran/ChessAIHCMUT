@@ -20,6 +20,7 @@ class Move(Action):
       return self.pos == other.pos and self.tar == other.tar
     return False
 
+
 class QueenPromote(Action):
   def __init__(self, pos, tar):
     super().__init__(pos, tar)
@@ -27,6 +28,7 @@ class QueenPromote(Action):
     if isinstance(other, QueenPromote):
       return self.pos == other.pos and self.tar == other.tar
     return False
+  
 
 class EnterTower(Action):
   def __init__(self, kPos, kTar, rPos, rTar):

@@ -1,7 +1,7 @@
 import argparse
 from frontend.game import GameFrontEnd
 from logic.game import GameController
-from logic.attributes import Turn, GameState, QueenPromote, EnterTower
+from logic.attributes import Turn, GameState, QueenPromote, EnterTower, Move
 from algorithms.heuristic import Heuristic
 from algorithms.searchAlgo import MinMaxAlgo
 
@@ -14,28 +14,29 @@ def main():
   game.setUpPlayer(args.mode)
   game.printInfoBoard()
   game.play()
+
   # board = [
-  #   ['','','','','bK','bP','',''],
-  #   ['', '','','','bP','bP','',''],
-  #   ['','wR','','','','','',''],
-  #   ['','','','','','','',''],
-  #   ['','','','','','','',''],
-  #   ['','','','','','','',''],
+  #   ['bR','','','','','bK','','bR'],
+  #   ['bP', '','bP','','','bP','',''],
+  #   ['bP','','','','','','','bP'],
+  #   ['','','bB','','','','',''],
+  #   ['','','','bP','','bN','',''],
+  #   ['','','','bN','','','wK','bP'],
+  #   ['', '','','','','bP','',''],
   #   ['', '','','','','','',''],
-  #   ['', '','wB','','wK','','',''],
   # ]
   # turn = Turn.WHITE
 
   # gs = GameState(board, turn)
-  # # eval_value = Heuristic.eval(gs)
-  # # print(eval_value)
+  # # # eval_value = Heuristic.eval(gs)
+  # # # print(eval_value)
   # gc = GameController()
-  # search_algo = MinMaxAlgo()
-  # move = search_algo.searchMove(gs)
-  # print(f"{move.pos} {move.tar}")
-  # hello = gc.isTerminal(gs)
-  # print(hello)
-  # gc.checkValidMove(gs, EnterTower((0,4),(0,2),(0,0),(0,3)))
+  # # search_algo = MinMaxAlgo()
+  # # move = search_algo.searchMove(gs)
+  # # print(f"{move.pos} {move.tar}")
+  # # hello = gc.isTerminal(gs)
+  # # print(hello)
+  # print(gc.isTerminal(gs))
 
 if __name__ == '__main__':
   main()

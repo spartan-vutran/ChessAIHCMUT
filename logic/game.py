@@ -118,8 +118,10 @@ class GameController:
       return False
     pieceClass = self.pieceDict[square[1]]
     for pieceAction in pieceClass.getValidMoves(self, gs, (row,col)):
+      # print(f"{pieceAction.pos} \t {pieceAction.tar}")
       if action == pieceAction:
         return True
+    # return True
   
   def move(self, gs: GameState, action: Action) -> GameState:
     turn = Turn.WHITE if gs.turn.value == Turn.BLACK.value else Turn.BLACK
@@ -199,9 +201,6 @@ class GameController:
       for j, square in enumerate(row):
         if  square == id:
           pieces.append((i,j))
-
-    if not pieces:
-      print("Hello")
     return pieces
 
 
@@ -218,7 +217,6 @@ class GameController:
     pieceClass = self.pieceDict[piece[1]]
     for action in pieceClass.getValidMoves(self, gs, pos):
       yield action
-
 
 
   def board_to_string(self, board):

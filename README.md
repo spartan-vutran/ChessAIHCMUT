@@ -95,5 +95,7 @@ Piece table
     + [ ] Display time up.
 + [ ] Optimize for searching.
   + [x] unmove()
-  + Review heuristic function.
-+ [ ] Time up for searching for agent.
+  + [x] Review heuristic function.
+  + [ ] Optimize heuristic function
++ [x] Time up while searching for agent.
++ [x] Utility function. 
