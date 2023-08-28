@@ -159,8 +159,8 @@ class GameFrontEnd:
       self.player1 = Person()
       self.player2 = Person()
     elif mode == 'agentvsagent':
-      # self.player1 = RandomAgent()
-      self.player1 = EasyAgent()
+      self.player1 = RandomAgent()
+      # self.player1 = EasyAgent()
       self.player2 = NormalAgent()
     else: 
       self.player1 = Person()
