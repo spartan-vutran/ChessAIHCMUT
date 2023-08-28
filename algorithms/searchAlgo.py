@@ -28,18 +28,19 @@ class AlphaBetaAlgo(SearchAlgo):
         print(f"===================Guess for=============================")
         print(f"============================================================")
         eval_value = Heuristic.eval(gs)
-        print(f"Its heuristic value:{eval_value}")
+        
         print(self.game.board_to_string(gs.board))
+        print(f"Its heuristic value:{eval_value}")
         for move in self.game.actions(gs):
             gsCopy = self.game.move(gs, move)
-            if not self.game.checkValidMove(gsCopy, move):
-                continue
-            
+
             if turn == Turn.BLACK:
                 print(f"===================Check move {count}========================")
                 print(self.game.board_to_string(gsCopy.board))
                 print(f"Current turn: {'White' if gsCopy.turn == Turn.WHITE else 'Black'}")
                 score = self.maxValue(gsCopy, self.depth, alpha, beta)
+                print(f"===================Traceback to========================")
+                print(self.game.board_to_string(gsCopy.board))
                 print(f"Its heuristic value:{eval_value}")
                 print(f"Current best move:{best_move}")
                 count += 1
