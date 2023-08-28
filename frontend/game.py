@@ -161,12 +161,12 @@ class GameFrontEnd:
     elif mode == 'agentvsagent':
       # self.player1 = EasyAgent(MinMaxAlgo(2))
       self.player1 = RandomAgent()
-      self.player2 = NormalAgent(AlphaBetaAlgo(2))
+      self.player2 = NormalAgent(AlphaBetaAlgo())
     else: 
       self.player1 = Person()
       # self.player2 = Agent()
       # self.player2 = RandomAgent()
-      self.player2 = HardAgent(AlphaBetaAlgo(2))
+      self.player2 = HardAgent(AlphaBetaAlgo())
     self.players = [self.player1, self.player2]
 
 
@@ -268,6 +268,7 @@ class GameFrontEnd:
       rPiece.y = action.rTar[1]
       rTar_square.occupying_piece = rPiece
 
+    tar_square.highlight = True
     # TODO: Update gameState
     self.gameState = self.controller.move(self.gameState, action)
     if self.controller.isTerminal(self.gameState):
