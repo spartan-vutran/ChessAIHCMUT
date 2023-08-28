@@ -91,8 +91,9 @@ Piece table
 
 ## 3. Todos
 + [ ] Options for running agents.
-    + [ ] Display UI/UX.
+    + [x] Display UI/UX.
     + [ ] Display time up.
 + [ ] Optimize for searching.
-  + unmove()
+  + [x] unmove()
+  + Review heuristic function.
 + [ ] Time up for searching for agent.

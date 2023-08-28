@@ -20,7 +20,7 @@ class AlphaBetaAlgo(SearchAlgo):
 
     def searchMove(self, gs: GameState) -> Action:
         best_move = None
-        turn = gs.turn
+        turn = self.game.toMove(gs)
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         
         for move in self.game.actions(gs):
@@ -41,7 +41,7 @@ class AlphaBetaAlgo(SearchAlgo):
                     best_move = move
             else: 
                 score = self.minValue(gsCopy, self.depth, -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE)
-                if (score < best_score):
+                if (score < best_score): 
                     best_score = score
                     best_move = move
             print(score)
@@ -87,7 +87,7 @@ class AlphaBetaAlgo(SearchAlgo):
 
 class MinMaxAlgo(SearchAlgo):
     INFINITE = 10000000
-    
+
     def __init__(self, depth = 2):
        self.game = GameController()
        self.depth = depth

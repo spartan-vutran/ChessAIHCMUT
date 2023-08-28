@@ -55,13 +55,16 @@ class Square:
 
 
 
-class Player():
-  pass
+
 
 
 class Turn(Enum):
    WHITE = 0
    BLACK = 1
+
+
+class Player():
+  pass
 
 
 class Agent(Player):
