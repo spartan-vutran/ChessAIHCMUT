@@ -9,7 +9,7 @@ from enum import Enum
 from frontend import settings
 from logic.attributes import Action, Move, QueenPromote, EnterTower
 from algorithms.searchAlgo import MinMaxAlgo, SearchAlgo, AlphaBetaAlgo
-from algorithms.heuristic import Heuristic, MovingMatrixAndMaterialHeuristic
+from algorithms.heuristic import Heuristic, MovingMatrixAndMaterialHeuristic, AdvancedHeuristic
 
 class Square:
 	def __init__(self, x, y, width, height):
@@ -108,11 +108,11 @@ class NormalAgent(AlgoAgent):
 
 
 class HardAgent(AlgoAgent):
-  def __init__(self, algorithm: SearchAlgo, heuristic: Optional[Heuristic] = None):
-    super().__init__(algorithm, heuristic)
+  def __init__(self):
+    super().__init__(AlphaBetaAlgo, AdvancedHeuristic)
 
   def getMove(self, gs: GameState):
-    return self.algo.searchMove(gs)
+    return self.algo.searchMove(gs, self.heuristic)
 
 
 class Person(Player):
@@ -160,7 +160,7 @@ class GameFrontEnd:
       self.player2 = Person()
     elif mode == 'agentvsagent':
       self.player1 = RandomAgent()
-      self.player2 = NormalAgent()
+      self.player2 = HardAgent()
     else: 
       self.player1 = Person()
       # self.player2 = Agent()

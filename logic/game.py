@@ -190,7 +190,9 @@ class GameController:
 
 
   def utility(self, gs:GameState, p:Turn) -> float:
-    pass
+    # ONLY CALL WHEN THE STATE IS TERMINAL
+    return -1 if gs.turn == p else 1
+    
 
 
   def findPiecesById(self, gs:GameState, id: str) -> List[Tuple[int]]:

@@ -1,1 +1,1 @@
-ALGO_DEPTH = 2
+ALGO_DEPTH = 1

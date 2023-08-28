@@ -97,5 +97,6 @@ Piece table
   + [x] unmove()
   + [x] Review heuristic function.
   + [ ] Optimize heuristic function
+  + [ ] Check logic for |heuristic value| < utility value
 + [x] Time up while searching for agent.
 + [x] Utility function. 

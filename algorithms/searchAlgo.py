@@ -53,11 +53,11 @@ class AlphaBetaAlgo(SearchAlgo):
                     best_score = score
                     best_move = move
                     beta = min(beta, score)
-                # print(f"===================Traceback to========================")
-                # print(chessLogic.board_to_string(gsCopy.board))
-                # print(f"Its heuristic value:{score}")
-                # print(f"Current best score:{best_score}")
-                # print(f"Current best move: {best_move.pos} {best_move.tar}")
+                print(f"===================Traceback to========================")
+                print(chessLogic.board_to_string(gsCopy.board))
+                print(f"Its heuristic value:{score}")
+                print(f"Current best score:{best_score}")
+                print(f"Current best move: {best_move.pos} {best_move.tar}")
                     
             else: 
                 score = AlphaBetaAlgo.minValue(gsCopy, alpha, beta, heuristic)
@@ -71,6 +71,8 @@ class AlphaBetaAlgo(SearchAlgo):
     
 
     def maxValue(gs: GameState, depth:int, alpha, beta, heuristic: Heuristic):
+        if chessLogic.isTerminal(gs):
+          return chessLogic.utility(gs, gs.turn)
         if chessLogic.isCutOff(gs, depth): #or chessLogic.isTerminal(gs)
             return heuristic.eval(gs)
         
@@ -99,6 +101,8 @@ class AlphaBetaAlgo(SearchAlgo):
     
 
     def minValue(gs: GameState, depth, alpha, beta, heuristic):
+        if chessLogic.isTerminal(gs):
+          return chessLogic.utility(gs, gs.turn)
         if chessLogic.isCutOff(gs, depth):
             return heuristic.eval(gs)
         
@@ -167,6 +171,8 @@ class MinMaxAlgo(SearchAlgo):
     
     
     def maxValue(self, gs: GameState, depth, heuristic: Heuristic):
+        if chessLogic.isTerminal(gs):
+          return chessLogic.utility(gs, gs.turn)
         if chessLogic.isCutOff(gs, depth):
             return heuristic.eval(gs)
         
@@ -181,6 +187,8 @@ class MinMaxAlgo(SearchAlgo):
     
 
     def minValue(self, gs: GameState, depth, heuristic: Heuristic):
+        if chessLogic.isTerminal(gs):
+          return chessLogic.utility(gs, gs.turn)
         if chessLogic.isCutOff(gs, depth):
             return heuristic.eval(gs)
         
