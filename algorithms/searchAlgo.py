@@ -1,9 +1,12 @@
 from logic.attributes import Turn, GameState, Action, Move, QueenPromote, EnterTower
 from .heuristic import Heuristic
-from logic.game import GameController
+from logic.game import chessLogic
 from frontend.settings import TIME_IN_TURN
 import time
 import copy
+
+
+
 
 class SearchAlgo:
     def __init__():
@@ -15,35 +18,35 @@ class SearchAlgo:
 
 class AlphaBetaAlgo(SearchAlgo):
     INFINITE = 10000000
-    def __init__(self, depth = 2):
-       self.game = GameController()
-       self.depth = depth
+    
+    # def __init__(self, depth = 2):
+    #   pass
 
 
-    def searchMove(self, gs: GameState) -> Action:
+    def searchMove(gs: GameState, heuristic: Heuristic) -> Action:
         best_move = None
-        turn = self.game.toMove(gs)
+        turn = chessLogic.toMove(gs)
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         alpha, beta = -MinMaxAlgo.INFINITE, MinMaxAlgo.INFINITE
         count = 1
 
         print(f"===================Guess for=============================")
         print(f"============================================================")
-        eval_value = Heuristic.eval(gs)
+        eval_value = heuristic.eval(gs)
         
-        print(self.game.board_to_string(gs.board))
+        print(chessLogic.board_to_string(gs.board))
         print(f"Its heuristic value:{eval_value}")
-        start_time = time.time()  
-        for move in self.game.actions(gs):
+        start_time = time.time()
+        for move in chessLogic.actions(gs):
             if time.time() - start_time >= TIME_IN_TURN:
               return best_move
-            gsCopy = self.game.move(gs, move)
+            gsCopy = chessLogic.move(gs, move)
 
             if turn == Turn.BLACK:
                 # print(f"===================Check move {count}========================")
-                # print(self.game.board_to_string(gsCopy.board))
+                # print(chessLogic.board_to_string(gsCopy.board))
                 # print(f"Current turn: {'White' if gsCopy.turn == Turn.WHITE else 'Black'}")
-                score = self.maxValue(gsCopy, self.depth, alpha, beta)
+                score = AlphaBetaAlgo.maxValue(gsCopy, 1, alpha, beta, heuristic)
                 
                 count += 1
                 if (score < best_score): 
@@ -51,13 +54,13 @@ class AlphaBetaAlgo(SearchAlgo):
                     best_move = move
                     beta = min(beta, score)
                 # print(f"===================Traceback to========================")
-                # print(self.game.board_to_string(gsCopy.board))
+                # print(chessLogic.board_to_string(gsCopy.board))
                 # print(f"Its heuristic value:{score}")
                 # print(f"Current best score:{best_score}")
                 # print(f"Current best move: {best_move.pos} {best_move.tar}")
                     
             else: 
-                score = self.minValue(gsCopy, self.depth, alpha, beta)
+                score = AlphaBetaAlgo.minValue(gsCopy, alpha, beta, heuristic)
                 if (score > best_score):
                     best_score = score
                     best_move = move
@@ -67,24 +70,24 @@ class AlphaBetaAlgo(SearchAlgo):
         return best_move
     
 
-    def maxValue(self, gs: GameState, depth, alpha, beta):
-        if (depth == 0): #or self.game.isTerminal(gs)
-            return Heuristic.eval(gs)
+    def maxValue(gs: GameState, depth:int, alpha, beta, heuristic: Heuristic):
+        if chessLogic.isCutOff(gs, depth): #or chessLogic.isTerminal(gs)
+            return heuristic.eval(gs)
         
         best_score = - MinMaxAlgo.INFINITE
         count = 1
-        for move in self.game.actions(gs):
-            newGs = self.game.move(gs, move)
+        for move in chessLogic.actions(gs):
+            newGs = chessLogic.move(gs, move)
             # print(f"===================Check move {count}========================")
-            # print(self.game.board_to_string(newGs.board))
+            # print(chessLogic.board_to_string(newGs.board))
             # print(f"maxValue")
             # print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
 
-            score = self.minValue(newGs, depth-1, alpha, beta)
+            score = AlphaBetaAlgo.minValue(newGs, depth+1, alpha, beta, heuristic)
             best_score = max(best_score, score)
             alpha = max(alpha, score)
             # print(f"===================Traceback to========================")
-            # print(self.game.board_to_string(newGs.board))
+            # print(chessLogic.board_to_string(newGs.board))
             # print(f"Its heuristic value:{score}")
             # print(f"Current best score:{best_score}")
             # print(f"Alpha: {alpha} \t Beta: {beta}")
@@ -95,24 +98,24 @@ class AlphaBetaAlgo(SearchAlgo):
         return best_score
     
 
-    def minValue(self, gs: GameState, depth, alpha, beta):
-        if (depth == 0):
-            return Heuristic.eval(gs)
+    def minValue(gs: GameState, depth, alpha, beta, heuristic):
+        if chessLogic.isCutOff(gs, depth):
+            return heuristic.eval(gs)
         
         best_score = MinMaxAlgo.INFINITE
         gs = copy.deepcopy(gs)
         count = 1
-        for move in self.game.actions(gs):
-            newGs = self.game.move(gs, move)
+        for move in chessLogic.actions(gs):
+            newGs = chessLogic.move(gs, move)
             # print(f"===================Check move {count}========================")
-            # print(self.game.board_to_string(newGs.board))
+            # print(chessLogic.board_to_string(newGs.board))
             # print(f"minValue")
             # print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
-            score = self.maxValue(newGs, depth-1, alpha, beta)
+            score = AlphaBetaAlgo.maxValue(newGs, depth+1, alpha, beta, heuristic)
             best_score = min(best_score, score)
             beta = min(beta, score)
             # print(f"===================Traceback to========================")
-            # print(self.game.board_to_string(newGs.board))
+            # print(chessLogic.board_to_string(newGs.board))
             # print(f"Its heuristic value:{score}")
             # print(f"Current best score:{best_score}")
             # print(f"Alpha: {alpha} \t Beta: {beta}")
@@ -126,33 +129,32 @@ class AlphaBetaAlgo(SearchAlgo):
 class MinMaxAlgo(SearchAlgo):
     INFINITE = 10000000
 
-    def __init__(self, depth = 2):
-       self.game = GameController()
-       self.depth = depth
+    def __init__(self):
+      pass
 
 
-    def searchMove(self, gs: GameState) -> Action:
+    def searchMove(self, gs: GameState, heuristic: Heuristic) -> Action:
         best_move = None
         turn = gs.turn
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         start_time = time.time()
-        for move in self.game.actions(gs):
-            # if not self.game.checkValidMove(gsCopy, move):
+        for move in chessLogic.actions(gs):
+            # if not chessLogic.checkValidMove(gsCopy, move):
             #     continue
             # eval_value = Heuristic.eval(gs)
             
-            # print(self.game.board_to_string(gs.board))
+            # print(chessLogic.board_to_string(gs.board))
             # print(eval_value)
-            gsCopy = self.game.move(gs, move)
-            # print(self.game.board_to_string(gsCopy.board))
+            gsCopy = chessLogic.move(gs, move)
+            # print(chessLogic.board_to_string(gsCopy.board))
 
             if turn == Turn.WHITE:
-                score = self.minValue(gsCopy, self.depth)
+                score = MinMaxAlgo.minValue(gsCopy, 1, heuristic)
                 if (score > best_score):
                     best_score = score
                     best_move = move
             else: 
-                score = self.maxValue(gsCopy, self.depth)
+                score = MinMaxAlgo.maxValue(gsCopy, 1, heuristic)
                 if (score < best_score):
                     best_score = score
                     best_move = move
@@ -164,29 +166,29 @@ class MinMaxAlgo(SearchAlgo):
         return best_move
     
     
-    def maxValue(self, gs: GameState, depth):
-        if (depth == 0):
-            return Heuristic.eval(gs)
+    def maxValue(self, gs: GameState, depth, heuristic: Heuristic):
+        if chessLogic.isCutOff(gs, depth):
+            return heuristic.eval(gs)
         
         best_score = - MinMaxAlgo.INFINITE
-        for move in self.game.actions(gs):
-            newGs = self.game.move(gs, move)
+        for move in chessLogic.actions(gs):
+            newGs = chessLogic.move(gs, move)
 
-            score = self.minValue(newGs, depth-1)
+            score = MinMaxAlgo.minValue(newGs, depth+1, heuristic)
             best_score = max(best_score, score)
 
         return best_score
     
 
-    def minValue(self, gs: GameState, depth):
-        if (depth == 0):
-            return Heuristic.eval(gs)
+    def minValue(self, gs: GameState, depth, heuristic: Heuristic):
+        if chessLogic.isCutOff(gs, depth):
+            return heuristic.eval(gs)
         
         best_score = MinMaxAlgo.INFINITE
-        for move in self.game.actions(gs):
-            newGs = self.game.move(gs, move)
+        for move in chessLogic.actions(gs):
+            newGs = chessLogic.move(gs, move)
 
-            score = self.maxValue(newGs, depth-1)
+            score = MinMaxAlgo.maxValue(newGs, depth+1, heuristic)
             best_score = min(best_score, score)
 
         return best_score

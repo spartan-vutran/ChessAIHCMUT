@@ -3,12 +3,13 @@ import sys
 import random
 import time
 from .pieces import Rook, Queen, Pawn, Knight, King, Bishop
-from typing import Tuple
-from logic.game import GameState, GameController, Action
+from typing import Optional
+from logic.game import GameState, chessLogic, Action
 from enum import Enum
 from frontend import settings
 from logic.attributes import Action, Move, QueenPromote, EnterTower
 from algorithms.searchAlgo import MinMaxAlgo, SearchAlgo, AlphaBetaAlgo
+from algorithms.heuristic import Heuristic, MovingMatrixAndMaterialHeuristic
 
 class Square:
 	def __init__(self, x, y, width, height):
@@ -51,11 +52,7 @@ class Square:
 			centering_rect = self.occupying_piece.img.get_rect()
 			centering_rect.center = self.rect.center
 			display.blit(self.occupying_piece.img, centering_rect.topleft)
-			
-
-
-
-
+		
 
 
 class Turn(Enum):
@@ -74,42 +71,45 @@ class Agent(Player):
 
 class RandomAgent(Agent):
   def __init__(self):
-    self.controller = GameController()
+    pass
 
   def getMove(self, gs: GameState):
     actions = []
-    for action in self.controller.actions(gs):
+    for action in chessLogic.actions(gs):
        actions.append(action)
     return random.choice(actions)
   
 
 class AlgoAgent(Agent):
-  def __init__(self, algorithm: SearchAlgo):
+  def __init__(self, algorithm: SearchAlgo, heuristic: Optional[Heuristic] = None):
     self.algo = algorithm
+    self.heuristic = heuristic
 
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
   
 
 class EasyAgent(AlgoAgent):
-  def __init__(self, algorithm: SearchAlgo):
-    super().__init__(algorithm)
+  def __init__(self):
+    super().__init__(MinMaxAlgo, MovingMatrixAndMaterialHeuristic)
+
   
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
   
   
 class NormalAgent(AlgoAgent):
-  def __init__(self, algorithm: SearchAlgo):
-    super().__init__(algorithm)
+  def __init__(self):
+    super().__init__(AlphaBetaAlgo, MovingMatrixAndMaterialHeuristic)
+
 
   def getMove(self, gs: GameState):
-    return self.algo.searchMove(gs)
+    return self.algo.searchMove(gs, self.heuristic)
 
 
 class HardAgent(AlgoAgent):
-  def __init__(self, algorithm: SearchAlgo):
-    super().__init__(algorithm)
+  def __init__(self, algorithm: SearchAlgo, heuristic: Optional[Heuristic] = None):
+    super().__init__(algorithm, heuristic)
 
   def getMove(self, gs: GameState):
     return self.algo.searchMove(gs)
@@ -134,7 +134,7 @@ class GameFrontEnd:
   def initGame(self):
     pygame.init()
     self.screen = pygame.display.set_mode(settings.WINDOW_SIZE)
-    self.controller = GameController()
+    self.controller = chessLogic
 
   def __init__(self):
     self.width = settings.WINDOW_SIZE[0]
@@ -160,12 +160,12 @@ class GameFrontEnd:
       self.player2 = Person()
     elif mode == 'agentvsagent':
       self.player1 = RandomAgent()
-      self.player2 = NormalAgent(AlphaBetaAlgo())
+      self.player2 = NormalAgent()
     else: 
       self.player1 = Person()
       # self.player2 = Agent()
       # self.player2 = RandomAgent()
-      self.player2 = HardAgent(AlphaBetaAlgo())
+      self.player2 = NormalAgent()
     self.players = [self.player1, self.player2]
 
 

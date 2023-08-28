@@ -1,6 +1,6 @@
 import argparse
 from frontend.game import GameFrontEnd
-from logic.game import GameController
+from logic.game import chessLogic
 from logic.attributes import Turn, GameState, QueenPromote, EnterTower, Move
 from algorithms.heuristic import Heuristic
 from algorithms.searchAlgo import MinMaxAlgo
@@ -30,7 +30,7 @@ def main():
   # gs = GameState(board, turn)
   # # # eval_value = Heuristic.eval(gs)
   # # # print(eval_value)
-  # gc = GameController()
+  # gc = chessLogic
   # # search_algo = MinMaxAlgo()
   # # move = search_algo.searchMove(gs)
   # # print(f"{move.pos} {move.tar}")

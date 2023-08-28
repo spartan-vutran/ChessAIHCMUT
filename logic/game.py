@@ -8,6 +8,7 @@ from logic.pieces.King import King
 from logic.pieces.Pawn import Pawn
 from logic.attributes import Action, Move, QueenPromote, EnterTower
 import copy
+from algorithms import settings
 
 
 class GameController:
@@ -218,6 +219,11 @@ class GameController:
     for action in pieceClass.getValidMoves(self, gs, pos):
       yield action
 
+  def isCutOff(self, gs:GameState, depth:int):
+    if depth > settings.ALGO_DEPTH:
+      return True
+    return False 
+
 
   def board_to_string(self, board):
     string =  "    A  B  C  D  E  F  G  H\n"
@@ -232,3 +238,7 @@ class GameController:
                 string += ".. "
         string += "\n"
     return string + "\n"
+
+
+
+chessLogic = GameController()

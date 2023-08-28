@@ -8,6 +8,11 @@ from logic.pieces.Pawn import Pawn
 from logic.attributes import GameState
 
 class Heuristic:
+  @staticmethod
+  def eval(gs: GameState):
+    pass
+
+class MovingMatrixAndMaterialHeuristic(Heuristic):
 
     # The tables denote the points scored for the position of the chess pieces on the board.
 
@@ -89,14 +94,16 @@ class Heuristic:
 
     @staticmethod
     def eval(gs: GameState):
-        material = Heuristic.get_material_score(gs)
+        heuristic = MovingMatrixAndMaterialHeuristic
+        material = heuristic.get_material_score(gs)
+        
 
-        pawns = Heuristic.get_piece_position_score(gs, Pawn.NOTATION, Heuristic.PAWN_TABLE)
-        knights = Heuristic.get_piece_position_score(gs, Knight.NOTATION, Heuristic.KNIGHT_TABLE)
-        bishops = Heuristic.get_piece_position_score(gs, Bishop.NOTATION, Heuristic.BISHOP_TABLE)
-        rooks = Heuristic.get_piece_position_score(gs, Rook.NOTATION, Heuristic.ROOK_TABLE)
-        queens = Heuristic.get_piece_position_score(gs, Queen.NOTATION, Heuristic.QUEEN_TABLE)
-        kings = Heuristic.get_piece_position_score(gs, King.NOTATION, Heuristic.KING_TABLE)
+        pawns = heuristic.get_piece_position_score(gs, Pawn.NOTATION, heuristic.PAWN_TABLE)
+        knights = heuristic.get_piece_position_score(gs, Knight.NOTATION, heuristic.KNIGHT_TABLE)
+        bishops = heuristic.get_piece_position_score(gs, Bishop.NOTATION, heuristic.BISHOP_TABLE)
+        rooks = heuristic.get_piece_position_score(gs, Rook.NOTATION, heuristic.ROOK_TABLE)
+        queens = heuristic.get_piece_position_score(gs, Queen.NOTATION, heuristic.QUEEN_TABLE)
+        kings = heuristic.get_piece_position_score(gs, King.NOTATION, heuristic.KING_TABLE)
 
         pawn_structure_bonus = 0
         for col in range(8):
