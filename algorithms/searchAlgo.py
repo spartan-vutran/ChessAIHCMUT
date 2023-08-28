@@ -137,27 +137,26 @@ class MinMaxAlgo(SearchAlgo):
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         start_time = time.time()
         for move in self.game.actions(gs):
-            gsCopy = copy.deepcopy(gs)
-            if not self.game.checkValidMove(gsCopy, move):
-                continue
-            eval_value = Heuristic.eval(gs)
+            # if not self.game.checkValidMove(gsCopy, move):
+            #     continue
+            # eval_value = Heuristic.eval(gs)
             
-            print(self.game.board_to_string(gs.board))
-            print(eval_value)
+            # print(self.game.board_to_string(gs.board))
+            # print(eval_value)
             gsCopy = self.game.move(gs, move)
-            print(self.game.board_to_string(gsCopy.board))
+            # print(self.game.board_to_string(gsCopy.board))
 
             if turn == Turn.WHITE:
-                score = self.maxValue(gsCopy, self.depth)
+                score = self.minValue(gsCopy, self.depth)
                 if (score > best_score):
                     best_score = score
                     best_move = move
             else: 
-                score = self.minValue(gsCopy, self.depth)
+                score = self.maxValue(gsCopy, self.depth)
                 if (score < best_score):
                     best_score = score
                     best_move = move
-            print(score)
+            # print(score)
 
             if time.time() - start_time >= TIME_IN_TURN:
               return best_move
@@ -171,10 +170,9 @@ class MinMaxAlgo(SearchAlgo):
         
         best_score = - MinMaxAlgo.INFINITE
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            self.game.move(gs, move)
+            newGs = self.game.move(gs, move)
 
-            score = self.minValue(gs, self.depth-1)
+            score = self.minValue(newGs, depth-1)
             best_score = max(best_score, score)
 
         return best_score
@@ -186,10 +184,9 @@ class MinMaxAlgo(SearchAlgo):
         
         best_score = MinMaxAlgo.INFINITE
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            self.game.move(gs, move)
+            newGs = self.game.move(gs, move)
 
-            score = self.maxValue(gs, self.depth-1)
+            score = self.maxValue(newGs, depth-1)
             best_score = min(best_score, score)
 
         return best_score
