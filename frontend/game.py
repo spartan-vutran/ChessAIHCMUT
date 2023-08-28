@@ -95,7 +95,7 @@ class EasyAgent(AlgoAgent):
 
   
   def getMove(self, gs: GameState):
-    return self.algo.searchMove(gs)
+    return self.algo.searchMove(gs, self.heuristic)
   
   
 class NormalAgent(AlgoAgent):
@@ -159,7 +159,8 @@ class GameFrontEnd:
       self.player1 = Person()
       self.player2 = Person()
     elif mode == 'agentvsagent':
-      self.player1 = RandomAgent()
+      # self.player1 = RandomAgent()
+      self.player1 = EasyAgent()
       self.player2 = NormalAgent()
     else: 
       self.player1 = Person()
@@ -273,7 +274,7 @@ class GameFrontEnd:
     self.gameState = self.controller.move(self.gameState, action)
     if self.controller.isTerminal(self.gameState):
       print(f"Player {1-self.gameState.turn.value} win")
-      self.board_to_string()
+      print(self.board_to_string())
       sys.exit()
     print(self.board_to_string())
     print(self.gameState.turn)

@@ -129,11 +129,11 @@ class AlphaBetaAlgo(SearchAlgo):
 class MinMaxAlgo(SearchAlgo):
     INFINITE = 10000000
 
-    def __init__(self):
-      pass
+    # def __init__(self):
+    #   pass
 
 
-    def searchMove(self, gs: GameState, heuristic: Heuristic) -> Action:
+    def searchMove(gs: GameState, heuristic: Heuristic) -> Action:
         best_move = None
         turn = gs.turn
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
@@ -166,7 +166,7 @@ class MinMaxAlgo(SearchAlgo):
         return best_move
     
     
-    def maxValue(self, gs: GameState, depth, heuristic: Heuristic):
+    def maxValue(gs: GameState, depth, heuristic: Heuristic):
         if chessLogic.isCutOff(gs, depth):
             return heuristic.eval(gs)
         
@@ -180,7 +180,7 @@ class MinMaxAlgo(SearchAlgo):
         return best_score
     
 
-    def minValue(self, gs: GameState, depth, heuristic: Heuristic):
+    def minValue(gs: GameState, depth, heuristic: Heuristic):
         if chessLogic.isCutOff(gs, depth):
             return heuristic.eval(gs)
         
