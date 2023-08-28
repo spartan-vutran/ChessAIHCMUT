@@ -97,7 +97,7 @@ class GameController:
     return False
     
   
-  def getValidMovesOfAllPiecesWith(self, gs:GameState) -> Action:
+  def actions(self, gs:GameState) -> Action:
     """
     This function returns all moves of pieces, in case "kPos" is given, that means kPos is in danger, only return moves that avoid being captured
     """
@@ -109,14 +109,6 @@ class GameController:
       
       for action in pieceClass.getValidMoves(self, gs, (posRow,posCol)):
         yield action
-
-
-  def actions(self, gs: GameState) -> List[Action]:
-    """
-    Find all actions from given states
-    """
-    for action in self.getValidMovesOfAllPiecesWith(gs):
-      yield action
 
 
   def checkValidMove(self, gs: GameState, action: Action) -> bool:
@@ -189,7 +181,7 @@ class GameController:
     """  
     # Find the Kings and their positions
     gs = copy.deepcopy(gs)
-    for _ in self.getValidMovesOfAllPiecesWith(gs):
+    for _ in self.actions(gs):
       return False
     return True
 
@@ -226,6 +218,8 @@ class GameController:
     pieceClass = self.pieceDict[piece[1]]
     for action in pieceClass.getValidMoves(self, gs, pos):
       yield action
+
+
 
   def board_to_string(self, board):
     string =  "    A  B  C  D  E  F  G  H\n"
