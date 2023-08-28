@@ -162,3 +162,6 @@ class Heuristic:
                     score = 0
 
         return white - black
+
+
+        

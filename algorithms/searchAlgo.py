@@ -1,6 +1,8 @@
 from logic.attributes import Turn, GameState, Action, Move, QueenPromote, EnterTower
 from .heuristic import Heuristic
 from logic.game import GameController
+from frontend.settings import TIME_IN_TURN
+import time
 import copy
 
 class SearchAlgo:
@@ -31,7 +33,10 @@ class AlphaBetaAlgo(SearchAlgo):
         
         print(self.game.board_to_string(gs.board))
         print(f"Its heuristic value:{eval_value}")
+        start_time = time.time()  
         for move in self.game.actions(gs):
+            if time.time() - start_time >= TIME_IN_TURN:
+              return best_move
             gsCopy = self.game.move(gs, move)
 
             if turn == Turn.BLACK:
@@ -39,16 +44,17 @@ class AlphaBetaAlgo(SearchAlgo):
                 # print(self.game.board_to_string(gsCopy.board))
                 # print(f"Current turn: {'White' if gsCopy.turn == Turn.WHITE else 'Black'}")
                 score = self.maxValue(gsCopy, self.depth, alpha, beta)
-                # print(f"===================Traceback to========================")
-                # print(self.game.board_to_string(gsCopy.board))
-                # print(f"Its heuristic value:{eval_value}")
-                # print(f"Current best move:{best_move}")
+                
                 count += 1
                 if (score < best_score): 
                     best_score = score
                     best_move = move
                     beta = min(beta, score)
-                    
+                # print(f"===================Traceback to========================")
+                # print(self.game.board_to_string(gsCopy.board))
+                # print(f"Its heuristic value:{score}")
+                # print(f"Current best score:{best_score}")
+                # print(f"Current best move: {best_move.pos} {best_move.tar}")
                     
             else: 
                 score = self.minValue(gsCopy, self.depth, alpha, beta)
@@ -129,7 +135,7 @@ class MinMaxAlgo(SearchAlgo):
         best_move = None
         turn = gs.turn
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
-        
+        start_time = time.time()
         for move in self.game.actions(gs):
             # if not self.game.checkValidMove(gsCopy, move):
             #     continue
@@ -151,6 +157,9 @@ class MinMaxAlgo(SearchAlgo):
                     best_score = score
                     best_move = move
             # print(score)
+
+            if time.time() - start_time >= TIME_IN_TURN:
+              return best_move
 
         return best_move
     
