@@ -6,7 +6,9 @@ There are three modes 'personvspersion', 'personvsagent', 'agentvsagent' for pla
 + Mode personvspersion: people will play by themself
 + Mode personvsagent: people is white piece, black piece is agent
 + Mode agentvsagent: white piece is random agent, black piece is algorithm agent
+
 From root
+
 To use mode personvspersion run
 ```bash
 python main.py --mode personvspersion
