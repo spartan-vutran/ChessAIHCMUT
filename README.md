@@ -2,10 +2,24 @@
 This repo is servered as part of the course Introduction to AI in my uni
 
 ## 1. How to run
-From root, run
+There are three modes 'personvspersion', 'personvsagent', 'agentvsagent' for playing game. 
++ Mode personvspersion: people will play by themself
++ Mode personvsagent: people is white piece, black piece is agent
++ Mode agentvsagent: white piece is random agent, black piece is algorithm agent
+From root
+To use mode personvspersion run
 ```bash
-python main.py
+python main.py --mode personvspersion
 ```
+To use mode personvsagent run
+```bash
+python main.py --mode personvsagent
+```
+To use mode agentvsagent run
+```bash
+python main.py --mode agentvsagent
+```
+
 ## 2. Heuristic
 A heuristic function consider various aspects of the game like pawn structure analysis, king safety evaluation, piece mobility.
 
