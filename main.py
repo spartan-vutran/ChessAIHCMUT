@@ -7,7 +7,7 @@ from algorithms.searchAlgo import MinMaxAlgo
 
 def main():
   parser = argparse.ArgumentParser(description='Mode games.')
-  parser.add_argument("-m", '--mode', choices=['personvspersion', 'personvsagent', 'agentvsagent'], default='personvsagent', help='Specify mode game to run')
+  parser.add_argument("-m", '--mode', choices=['personvspersion', 'personvsagent', 'agentvsagent'], default='agentvsagent', help='Specify mode game to run')
   args = parser.parse_args()
   
   game = GameFrontEnd()

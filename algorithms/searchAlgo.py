@@ -35,14 +35,14 @@ class AlphaBetaAlgo(SearchAlgo):
             gsCopy = self.game.move(gs, move)
 
             if turn == Turn.BLACK:
-                print(f"===================Check move {count}========================")
-                print(self.game.board_to_string(gsCopy.board))
-                print(f"Current turn: {'White' if gsCopy.turn == Turn.WHITE else 'Black'}")
+                # print(f"===================Check move {count}========================")
+                # print(self.game.board_to_string(gsCopy.board))
+                # print(f"Current turn: {'White' if gsCopy.turn == Turn.WHITE else 'Black'}")
                 score = self.maxValue(gsCopy, self.depth, alpha, beta)
-                print(f"===================Traceback to========================")
-                print(self.game.board_to_string(gsCopy.board))
-                print(f"Its heuristic value:{eval_value}")
-                print(f"Current best move:{best_move}")
+                # print(f"===================Traceback to========================")
+                # print(self.game.board_to_string(gsCopy.board))
+                # print(f"Its heuristic value:{eval_value}")
+                # print(f"Current best move:{best_move}")
                 count += 1
                 if (score < best_score): 
                     best_score = score
@@ -69,19 +69,19 @@ class AlphaBetaAlgo(SearchAlgo):
         count = 1
         for move in self.game.actions(gs):
             newGs = self.game.move(gs, move)
-            print(f"===================Check move {count}========================")
-            print(self.game.board_to_string(newGs.board))
-            print(f"maxValue")
-            print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
+            # print(f"===================Check move {count}========================")
+            # print(self.game.board_to_string(newGs.board))
+            # print(f"maxValue")
+            # print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
 
             score = self.minValue(newGs, depth-1, alpha, beta)
             best_score = max(best_score, score)
             alpha = max(alpha, score)
-            print(f"===================Traceback to========================")
-            print(self.game.board_to_string(newGs.board))
-            print(f"Its heuristic value:{score}")
-            print(f"Current best score:{best_score}")
-            print(f"Alpha: {alpha} \t Beta: {beta}")
+            # print(f"===================Traceback to========================")
+            # print(self.game.board_to_string(newGs.board))
+            # print(f"Its heuristic value:{score}")
+            # print(f"Current best score:{best_score}")
+            # print(f"Alpha: {alpha} \t Beta: {beta}")
             count += 1
             if beta <= alpha:
                 break  # Beta cutoff
@@ -98,18 +98,18 @@ class AlphaBetaAlgo(SearchAlgo):
         count = 1
         for move in self.game.actions(gs):
             newGs = self.game.move(gs, move)
-            print(f"===================Check move {count}========================")
-            print(self.game.board_to_string(newGs.board))
-            print(f"minValue")
-            print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
+            # print(f"===================Check move {count}========================")
+            # print(self.game.board_to_string(newGs.board))
+            # print(f"minValue")
+            # print(f"Current turn: {'White' if newGs.turn == Turn.WHITE else 'Black'}")
             score = self.maxValue(newGs, depth-1, alpha, beta)
             best_score = min(best_score, score)
             beta = min(beta, score)
-            print(f"===================Traceback to========================")
-            print(self.game.board_to_string(newGs.board))
-            print(f"Its heuristic value:{score}")
-            print(f"Current best score:{best_score}")
-            print(f"Alpha: {alpha} \t Beta: {beta}")
+            # print(f"===================Traceback to========================")
+            # print(self.game.board_to_string(newGs.board))
+            # print(f"Its heuristic value:{score}")
+            # print(f"Current best score:{best_score}")
+            # print(f"Alpha: {alpha} \t Beta: {beta}")
             count += 1
             if beta <= alpha:
                 break  # Alpha cutoff
@@ -131,27 +131,26 @@ class MinMaxAlgo(SearchAlgo):
         best_score = MinMaxAlgo.INFINITE if turn == Turn.BLACK else -MinMaxAlgo.INFINITE
         
         for move in self.game.actions(gs):
-            gsCopy = copy.deepcopy(gs)
-            if not self.game.checkValidMove(gsCopy, move):
-                continue
-            eval_value = Heuristic.eval(gs)
+            # if not self.game.checkValidMove(gsCopy, move):
+            #     continue
+            # eval_value = Heuristic.eval(gs)
             
-            print(self.game.board_to_string(gs.board))
-            print(eval_value)
+            # print(self.game.board_to_string(gs.board))
+            # print(eval_value)
             gsCopy = self.game.move(gs, move)
-            print(self.game.board_to_string(gsCopy.board))
+            # print(self.game.board_to_string(gsCopy.board))
 
             if turn == Turn.WHITE:
-                score = self.maxValue(gsCopy, self.depth)
+                score = self.minValue(gsCopy, self.depth)
                 if (score > best_score):
                     best_score = score
                     best_move = move
             else: 
-                score = self.minValue(gsCopy, self.depth)
+                score = self.maxValue(gsCopy, self.depth)
                 if (score < best_score):
                     best_score = score
                     best_move = move
-            print(score)
+            # print(score)
 
         return best_move
     
@@ -162,10 +161,9 @@ class MinMaxAlgo(SearchAlgo):
         
         best_score = - MinMaxAlgo.INFINITE
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            self.game.move(gs, move)
+            newGs = self.game.move(gs, move)
 
-            score = self.minValue(gs, self.depth-1)
+            score = self.minValue(newGs, depth-1)
             best_score = max(best_score, score)
 
         return best_score
@@ -177,10 +175,9 @@ class MinMaxAlgo(SearchAlgo):
         
         best_score = MinMaxAlgo.INFINITE
         for move in self.game.actions(gs):
-            gs = copy.deepcopy(gs)
-            self.game.move(gs, move)
+            newGs = self.game.move(gs, move)
 
-            score = self.maxValue(gs, self.depth-1)
+            score = self.maxValue(newGs, depth-1)
             best_score = min(best_score, score)
 
         return best_score

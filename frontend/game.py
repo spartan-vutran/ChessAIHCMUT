@@ -159,8 +159,8 @@ class GameFrontEnd:
       self.player1 = Person()
       self.player2 = Person()
     elif mode == 'agentvsagent':
-      # self.player1 = EasyAgent(MinMaxAlgo(2))
       self.player1 = RandomAgent()
+      # self.player2 = EasyAgent(MinMaxAlgo(2))
       self.player2 = NormalAgent(AlphaBetaAlgo(2))
     else: 
       self.player1 = Person()
@@ -188,6 +188,7 @@ class GameFrontEnd:
         action = curPlayer.getMove(self.gameState)
         if not self.move(action):
           print("Invalid move")
+        time.sleep(1)
       else:
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -272,6 +273,7 @@ class GameFrontEnd:
     self.gameState = self.controller.move(self.gameState, action)
     if self.controller.isTerminal(self.gameState):
       print(f"Player {1-self.gameState.turn.value} win")
+      self.board_to_string()
       sys.exit()
     print(self.board_to_string())
     print(self.gameState.turn)
